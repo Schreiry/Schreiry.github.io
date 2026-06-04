@@ -1,7 +1,9 @@
-# Original full-resolution source images — web-optimized copies live in /images.
-# (Keeps the Pages repo lean; delete these locally whenever you like.)
-3-2R.png
-Screenshot *.png
+# Original full-resolution source images dropped in the repo ROOT.
+# Web-optimized copies live in /images (those ARE committed).
+# Anchored to root so images/** is never affected.
+/*.png
+/*.jpg
+/*.jpeg
 *.psd
 *.xcf
 

@@ -151,6 +151,9 @@
     renderDock();
     if (CV.renderProjects) CV.renderProjects($("#project-grid"), config.projects);
 
+    // every large glass card gets the smooth hover shape-morph
+    $$(".about__lead, .about__panel, .panel, .gh-stat, .focus, .social-card").forEach((el) => el.classList.add("morph"));
+
     if (CV.initShader) CV.initShader($("#bg-shader"));
     if (CV.initCursor) CV.initCursor();
     if (CV.initInteractions) CV.initInteractions(config);

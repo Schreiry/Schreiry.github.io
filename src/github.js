@@ -95,7 +95,7 @@ window.CV = window.CV || {};
     requestAnimationFrame(step);
   }
 
-  function renderStats(data) {
+  function renderStats(data, weights) {
     const tiles = {
       repos: $("[data-gh='repos']"),
       stars: $("[data-gh='stars']"),
@@ -121,29 +121,28 @@ window.CV = window.CV || {};
     const note = $("#gh-source");
     if (note) note.textContent = data.live ? "source: github.com · live" : "source: cached snapshot";
 
-    // language bars
+    // language bars — prefer authoritative manual weights; else derive from API
     const host = $("#gh-langs");
-    if (host && data.languages.length) {
+    let langs = null;
+    if (weights && weights.length) {
+      langs = weights.slice(0, 6).map((w) => ({ name: w.name, pct: Math.round(w.value) }));
+    } else if (data.languages && data.languages.length) {
       const total = data.languages.reduce((s, l) => s + l.count, 0) || 1;
-      const top = data.languages.slice(0, 6);
-      host.innerHTML = top
-        .map((l, i) => {
-          const pct = Math.round((l.count / total) * 100);
-          return `
+      langs = data.languages.slice(0, 6).map((l) => ({ name: l.name, pct: Math.round((l.count / total) * 100) }));
+    }
+    if (host && langs) {
+      host.innerHTML = langs
+        .map((l, i) => `
           <div class="gh-lang" style="--i:${i}">
             <div class="gh-lang__head">
               <span class="gh-lang__name">${l.name}</span>
-              <span class="gh-lang__pct mono">${pct}%</span>
+              <span class="gh-lang__pct mono">${l.pct}%</span>
             </div>
-            <div class="gh-lang__track"><span class="gh-lang__fill" data-w="${pct}"></span></div>
-          </div>`;
-        })
+            <div class="gh-lang__track"><span class="gh-lang__fill" data-w="${l.pct}"></span></div>
+          </div>`)
         .join("");
-      // animate fills in
       requestAnimationFrame(() => {
-        $$(".gh-lang__fill", host).forEach((el) => {
-          el.style.width = (reduceMotion ? el.dataset.w : el.dataset.w) + "%";
-        });
+        $$(".gh-lang__fill", host).forEach((el) => { el.style.width = el.dataset.w + "%"; });
       });
     }
   }
@@ -163,10 +162,11 @@ window.CV = window.CV || {};
 
   window.CV.initGitHub = async function (config) {
     const user = config.identity.githubUser;
+    const weights = config.languageWeights;
     const fb = normalizeFallback(config.githubFallback || {});
 
     // paint fallback immediately so numbers are never blank
-    renderStats(fb);
+    renderStats(fb, weights);
 
     if (!user || typeof fetch !== "function") { renderProjectStars(fb); return; }
 
@@ -175,7 +175,7 @@ window.CV = window.CV || {};
       try { data = await fetchLive(user); saveCache(data); }
       catch (_) { data = null; }
     }
-    if (data) { renderStats(data); renderProjectStars(data); }
+    if (data) { renderStats(data, weights); renderProjectStars(data); }
     else { renderProjectStars(fb); }
   };
 })();

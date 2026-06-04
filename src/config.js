@@ -90,6 +90,19 @@ window.CV.config = {
     ],
   },
 
+  /* --- language distribution (AUTHORITATIVE) ---------------------------- */
+  // GitHub's raw breakdown counts old repos, so it over-weights C++ and
+  // under-weights Rust. These hand-set percentages reflect real, current
+  // proportions and are what the bars display. Edit freely (should sum ~100).
+  languageWeights: [
+    { name: "Rust", value: 40 },
+    { name: "Python", value: 30 },
+    { name: "C++", value: 20 },
+    { name: "Svelte", value: 5 },
+    { name: "C", value: 3 },
+    { name: "TeX", value: 2 },
+  ],
+
   /* --- about → system profile rows -------------------------------------- */
   profileRows: [
     { key: "identity", value: "David Greve · Schreiry" },
@@ -173,6 +186,11 @@ window.CV.config = {
         "Rust-based continuation and rethinking of the matrix engine idea: terminal UI, Rayon parallelism, engineering modules, performance analytics, and a cleaner computation platform — a direct successor to Fluminum.",
       ideas: ["Rust", "Rayon parallelism", "Ratatui TUI", "Matrix operations", "Thermal simulation", "GFLOPS analytics", "CSV export", "System profiling"],
       meta: [{ k: "lang", v: "Rust" }, { k: "ui", v: "tui" }, { k: "par", v: "rayon" }],
+      shots: [
+        { src: "./images/shots/flust-matrix.jpg", label: "Matrix compute · TUI" },
+        { src: "./images/shots/flust-main.jpg", label: "Terminal interface" },
+        { src: "./images/shots/flust-bench.jpg", label: "Benchmark & analytics" },
+      ],
     },
     {
       id: "alife", index: "04", title: "Alife",
@@ -183,6 +201,11 @@ window.CV.config = {
         "Python artificial life simulation with a 170-gene genome, inheritance, mutation, behavior systems, vectorized data layout, spatial indexing, and browser / local visualization modes.",
       ideas: ["170-gene genome", "Genetic algorithms", "Mutation & inheritance", "Behavior systems", "NumPy SoA arrays", "Numba JIT", "Spatial index", "FastAPI + WebSocket"],
       meta: [{ k: "lang", v: "py" }, { k: "genes", v: "170" }, { k: "view", v: "web/local" }],
+      shots: [
+        { src: "./images/shots/alife-1.jpg", label: "Live simulation" },
+        { src: "./images/shots/alife-2.jpg", label: "World & population" },
+        { src: "./images/shots/alife-3.jpg", label: "Analytics" },
+      ],
     },
     {
       id: "aesculapius", index: "05", title: "AESCULAPIUS",
@@ -193,6 +216,9 @@ window.CV.config = {
         "Flask and SQL Server prototype for simulated bio-threat monitoring, combining database triggers, API endpoints, real-time status logic, and atmospheric interface design.",
       ideas: ["Flask", "SQL Server", "Database triggers", "API endpoints", "Real-time status", "CRT / terminal style"],
       meta: [{ k: "lang", v: "flask" }, { k: "db", v: "mssql" }, { k: "mode", v: "sim" }],
+      shots: [
+        { src: "./images/shots/aesculapius.jpg", label: "Monitoring console" },
+      ],
     },
     {
       id: "labs", index: "06", title: "Experiments & Labs",

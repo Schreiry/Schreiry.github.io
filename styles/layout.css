@@ -38,15 +38,16 @@
 /* ---- top status / menu bar (OS continuity) -------------------------- */
 .topbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: var(--topbar-gap);
+  left: clamp(12px, 2vw, 26px);
+  right: clamp(12px, 2vw, 26px);
   height: var(--topbar-h);
   z-index: var(--z-topbar);
   display: flex;
   align-items: center;
   gap: var(--sp-4);
-  padding: 0 clamp(14px, 3vw, 28px);
-  border-radius: 0;
-  border-left: 0; border-right: 0; border-top: 0;
+  padding: 0 clamp(16px, 2.4vw, 26px);
+  border-radius: var(--r-pill);
 }
 .topbar__brand { display: flex; align-items: center; gap: var(--sp-3); font-weight: 650; color: var(--text-hi); }
 .topbar__dot {
@@ -72,9 +73,9 @@ main { position: relative; z-index: var(--z-content); }
 .section {
   position: relative;
   padding-block: clamp(56px, 9vw, 130px);
-  scroll-margin-top: calc(var(--topbar-h) + 20px);
+  scroll-margin-top: calc(var(--topbar-h) + var(--topbar-gap) + 24px);
 }
-.section:first-of-type { padding-top: calc(var(--topbar-h) + clamp(40px, 7vw, 90px)); }
+.section:first-of-type { padding-top: calc(var(--topbar-h) + var(--topbar-gap) + clamp(44px, 7vw, 96px)); }
 
 /* ---- section header (index + title + measurement) ------------------- */
 .section-head {
@@ -179,8 +180,9 @@ main { position: relative; z-index: var(--z-content); }
 .dock {
   display: flex;
   align-items: center;
-  gap: clamp(6px, 0.8vw, 12px);
-  padding: 10px 14px;
+  gap: clamp(8px, 1vw, 14px);
+  padding: 13px 18px;
+  overflow: visible;        /* let hover-lifted icons & tooltips escape the pill */
 }
 
 /* ---- toast (copy-email feedback) ------------------------------------ */
