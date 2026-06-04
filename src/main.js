@@ -44,14 +44,16 @@
       return `
       <article class="skill glass glass-spec morph tilt reveal" data-accent="${accent}">
         <span class="spec" aria-hidden="true"></span>
-        <span class="skill__grid" aria-hidden="true"></span>
         <div class="skill__head">
-          <span class="skill__glyph" aria-hidden="true">${esc(s.glyph)}</span>
+          <span class="skill__glyph" aria-hidden="true">${ICO(s.icon)}</span>
           <h3 class="skill__title lume">${esc(s.title)}</h3>
         </div>
         <p class="skill__desc">${esc(s.desc)}</p>
         <div class="tags">${s.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>
-        <div class="measure measure--tick" style="margin-top:auto" aria-hidden="true">module / ${idx}</div>
+        <div class="skill__foot" aria-hidden="true">
+          <span class="skill__status"><span class="led"></span>active</span>
+          <span class="measure measure--tick">module / ${idx}</span>
+        </div>
       </article>`;
     }).join("");
   }
@@ -106,24 +108,30 @@
     host.innerHTML = (config.social || []).filter((s) => s.url).map((s) => `
       <a class="social-card glass glass-spec" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">
         <span class="spec" aria-hidden="true"></span>
-        <span class="social-card__glyph mono">${esc(s.glyph)}</span>
+        <span class="social-card__glyph">${s.icon ? ICO(s.icon) : esc(s.glyph)}</span>
         <span class="social-card__body">
           <span class="social-card__label">${esc(s.label)}</span>
           <span class="social-card__host mono">${esc(hostOf(s.url))}</span>
         </span>
-        <span class="social-card__arrow" aria-hidden="true">↗</span>
+        <span class="social-card__arrow" aria-hidden="true">${ICO("arrowRt")}</span>
       </a>`).join("");
   }
 
   /* ---- dock ----------------------------------------------------------- */
+  const ICO = (name) => (CV.icon ? CV.icon(name) : "");
   function renderDock() {
     const host = $("#dock");
     if (!host) return;
     host.innerHTML = config.dock.map((item) => {
-      const glyph = `<span class="dock-item__glyph" aria-hidden="true">${esc(item.glyph)}</span>`;
+      const inner = item.text != null ? esc(item.text) : ICO(item.icon);
+      const glyph = `<span class="dock-item__glyph" aria-hidden="true">${inner}</span>`;
       const tip = `<span class="dock-item__tip">${esc(item.label)}</span>`;
       if (item.id === "cv") {
         return `<a class="dock-item" data-magnetic data-cv href="${esc(config.identity.cv)}" download
+                   aria-label="${esc(item.label)}">${glyph}${tip}</a>`;
+      }
+      if (item.type === "mailto") {
+        return `<a class="dock-item" data-magnetic data-mailto href="mailto:${esc(config.links.email)}"
                    aria-label="${esc(item.label)}">${glyph}${tip}</a>`;
       }
       if (item.type === "link") {
@@ -135,6 +143,16 @@
     }).join("");
   }
 
+  /* ---- inline SVG icons (static shell: buttons, topbar mark) ---------- */
+  function renderIcons() {
+    if (!CV.icon) return;
+    $$("[data-ico]").forEach((el) => {
+      if (el.dataset.icoDone) return;
+      el.innerHTML = CV.icon(el.dataset.ico);
+      el.dataset.icoDone = "1";
+    });
+  }
+
   /* ---- boot ----------------------------------------------------------- */
   function boot() {
     if (!config) { console.error("[main] CV.config missing"); return; }
@@ -142,6 +160,7 @@
     if (CV.applyStoredTheme) CV.applyStoredTheme();
 
     hydrateBindings();
+    renderIcons();
     renderSkills();
     renderProfile();
     renderFacets();

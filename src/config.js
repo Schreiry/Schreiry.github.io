@@ -24,7 +24,7 @@ window.CV.config = {
     descriptor:
       "Python / Rust / C++ · HPC · Simulation Systems · Backend Logic · Visual Systems",
     location: "Tbilisi, Georgia",
-    education: "Computer Engineering — Georgian Technical University",
+    education: "Computer Science — Georgian Technical University",
     direction: "High-performance computing · Simulation · Backend · Interface systems",
     signal: "available",
 
@@ -32,7 +32,7 @@ window.CV.config = {
       "I build technical software where performance, structure, and interface behavior matter. My work connects high-performance computing, simulation systems, backend logic, AI-assisted development, hardware understanding, and visual design.",
 
     about:
-      "Computer Engineering student focused on Python, Rust, C++, high-performance computing, simulation systems, backend development, and software optimization. I work on projects that combine algorithms, performance, architecture, visual systems, and practical engineering — matrix computation engines, artificial life simulations, database-backed prototypes, hardware diagnostics, and interface design.",
+      "Computer Science student focused on Python, Rust, C++, high-performance computing, simulation systems, backend development, and software optimization. I work on projects that combine algorithms, performance, architecture, visual systems, and practical engineering — matrix computation engines, artificial life simulations, database-backed prototypes, hardware diagnostics, and interface design.",
 
     // a few sharp “focus area” cards for the About section
     focusAreas: [
@@ -65,10 +65,10 @@ window.CV.config = {
   // Contact grid + dock links. glyph = short mono label or symbol.
   // To add a link (Telegram, Discord, X, YouTube, website…) just add a row.
   social: [
-    { id: "github",    label: "GitHub",    glyph: "GH", url: "https://github.com/Schreiry" },
-    { id: "linkedin",  label: "LinkedIn",  glyph: "in", url: "https://www.linkedin.com/in/schreiry/" },
-    { id: "instagram", label: "Instagram", glyph: "IG", url: "https://instagram.com/schreitory" },
-    { id: "facebook",  label: "Facebook",  glyph: "FB", url: "https://facebook.com/Schreitory" },
+    { id: "github",    label: "GitHub",    glyph: "GH", icon: "github",    url: "https://github.com/Schreiry" },
+    { id: "linkedin",  label: "LinkedIn",  glyph: "in", icon: "linkedin",  url: "https://www.linkedin.com/in/schreiry/" },
+    { id: "instagram", label: "Instagram", glyph: "IG", icon: "instagram", url: "https://instagram.com/schreitory" },
+    { id: "facebook",  label: "Facebook",  glyph: "FB", icon: "facebook",  url: "https://facebook.com/Schreitory" },
   ],
 
   /* --- live GitHub fallback (used if the API is rate-limited/offline) ---- */
@@ -107,7 +107,7 @@ window.CV.config = {
   profileRows: [
     { key: "identity", value: "David Greve · Schreiry" },
     { key: "role", value: "Software Engineer" },
-    { key: "education", value: "Computer Engineering — GTU" },
+    { key: "education", value: "Computer Science — GTU" },
     { key: "location", value: "Tbilisi, Georgia" },
     { key: "focus", value: "HPC · Simulation · Backend · Interface" },
     { key: "runtime", value: "human" },
@@ -121,28 +121,28 @@ window.CV.config = {
 
   /* --- capability matrix ------------------------------------------------- */
   skills: [
-    { glyph: "{ }", title: "Programming",
+    { icon: "code", title: "Programming",
       desc: "Languages I read, write, and reason in across system and application layers.",
       tags: ["Python", "Rust", "C++", "C", "C#", "SQL", "JavaScript / TS", "HTML / CSS"] },
-    { glyph: "//", title: "Software Engineering",
+    { icon: "layers", title: "Software Engineering",
       desc: "Structuring software so it stays legible, testable, and maintainable.",
       tags: ["Architecture", "Modular design", "Code review", "Debugging", "Git / VCS", "Refactoring"] },
-    { glyph: "≡", title: "HPC & Optimization",
+    { icon: "cpu", title: "HPC & Optimization",
       desc: "Making computation fit the hardware it runs on.",
       tags: ["SIMD", "AVX / SSE", "Multithreading", "Parallelism", "Memory optimization", "CPU optimization", "Data-oriented design"] },
-    { glyph: "∑", title: "Algorithms & Data Structures",
+    { icon: "sigma", title: "Algorithms & Data Structures",
       desc: "Choosing the right structure before writing the fast version.",
       tags: ["Strassen", "Matrix algorithms", "Binary search", "Pointers", "Spatial indexing", "Genetic algorithms"] },
-    { glyph: "::", title: "Backend & Databases",
+    { icon: "database", title: "Backend & Databases",
       desc: "Server logic and data layers behind interactive systems.",
       tags: ["Flask", "FastAPI", "SQL Server", "REST API", "WebSocket", "DB triggers"] },
-    { glyph: "✦", title: "AI-Assisted Development",
+    { icon: "spark", title: "AI-Assisted Development",
       desc: "AI as an engineering amplifier — judgment stays human.",
       tags: ["Prompt engineering", "Task decomposition", "Debugging support", "Documentation", "Iteration"] },
-    { glyph: "⌗", title: "Tools & Systems",
+    { icon: "terminal", title: "Tools & Systems",
       desc: "The environment I build, profile, and ship from.",
       tags: ["Git", "Linux / Windows", "Terminal · CLI / TUI", "Ratatui", "NumPy / Numba", "Matplotlib", "Pygame"] },
-    { glyph: "◐", title: "Hardware & Visual",
+    { icon: "hardware", title: "Hardware & Visual",
       desc: "From silicon to composition — the physical and visual ends of the craft.",
       tags: ["PC building", "Diagnostics", "Performance tuning", "Photography", "Color theory", "UI / UX"] },
   ],
@@ -265,24 +265,26 @@ window.CV.config = {
   },
 
   /* --- dock / command center -------------------------------------------- */
+  // type ∈ "action" | "link" | "mailto"
   dock: [
-    { id: "cv", label: "Download CV", glyph: "⬇", type: "action", action: "download-cv" },
-    { id: "github", label: "GitHub", glyph: "GH", type: "link", url: "https://github.com/Schreiry" },
-    { id: "linkedin", label: "LinkedIn", glyph: "in", type: "link", url: "https://www.linkedin.com/in/schreiry/" },
-    { id: "email", label: "Copy email", glyph: "@", type: "action", action: "copy-email" },
-    { id: "top", label: "Top", glyph: "↑", type: "action", action: "scroll-top" },
-    { id: "theme", label: "Theme", glyph: "◑", type: "action", action: "toggle-theme" },
-    { id: "lang", label: "EN", glyph: "EN", type: "action", action: "cycle-language" },
+    { id: "cv", label: "Download CV", icon: "download", type: "action", action: "download-cv" },
+    { id: "mail", label: "Open mail", icon: "mail", type: "mailto" },
+    { id: "github", label: "GitHub", icon: "github", type: "link", url: "https://github.com/Schreiry" },
+    { id: "linkedin", label: "LinkedIn", icon: "linkedin", type: "link", url: "https://www.linkedin.com/in/schreiry/" },
+    { id: "top", label: "Top", icon: "arrowUp", type: "action", action: "scroll-top" },
+    { id: "theme", label: "Theme", icon: "theme", type: "action", action: "toggle-theme" },
+    { id: "lang", label: "Language", text: "EN", type: "action", action: "cycle-language" },
   ],
 
-  /* --- decorative microcopy --------------------------------------------- */
+  /* --- operational microcopy (each line means something) ---------------- */
   microcopy: {
     runtime: "runtime: human",
     stack: "stack: python/rust/c++",
     mode: "mode: portfolio.os",
     signal: "signal: available",
-    focus: "focus: hpc/simulation/backend",
-    build: "build: stable · glass-on-glass · v1.1",
+    focus: "focus: software · systems · visual logic",
+    channel: "channel: open",
+    signature: "operational glass interface",
   },
 
   languagesUI: ["EN", "RU", "KA"],

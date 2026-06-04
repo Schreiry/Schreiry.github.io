@@ -41,7 +41,7 @@ window.CV = window.CV || {};
   }
 
   /* 2 — per-element refraction (--mx/--my) ------------------------------- */
-  const TRACK = ".glass, .portrait, .btn, .lume, .skill, .workstation, .panel, .facet, .tag, .dock-item, .gh-stat, .shot";
+  const TRACK = ".glass, .id-frame, .btn, .lume, .skill, .workstation, .panel, .facet, .tag, .dock-item, .gh-stat, .shot";
   function initGlassTracking() {
     if (!fine) return;
     const update = rafThrottle((el, x, y) => {
@@ -141,14 +141,15 @@ window.CV = window.CV || {};
     box.setAttribute("role", "dialog");
     box.setAttribute("aria-modal", "true");
     box.setAttribute("aria-label", "Screenshot viewer");
+    const ico = (n) => (window.CV.icon ? window.CV.icon(n) : "");
     box.innerHTML = `
-      <button class="lightbox__close" type="button" aria-label="Close">✕</button>
-      <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous">‹</button>
+      <button class="lightbox__close" type="button" aria-label="Close">${ico("close")}</button>
+      <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous">${ico("chevL")}</button>
       <figure class="lightbox__stage glass glass--strong">
         <img class="lightbox__img" alt="" />
         <figcaption class="lightbox__cap mono"></figcaption>
       </figure>
-      <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next">›</button>`;
+      <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next">${ico("chevR")}</button>`;
     document.body.appendChild(box);
     lb.box = box;
     lb.img = box.querySelector(".lightbox__img");
@@ -191,10 +192,57 @@ window.CV = window.CV || {};
     if (lb.lastFocus && lb.lastFocus.focus) lb.lastFocus.focus();
   }
 
+  /* 8a — bulletproof CV download ---------------------------------------- */
+  // Try fetch→blob (forces a real download with a clean filename, even when the
+  // server would otherwise open the PDF inline). On file:// or any failure we
+  // fall back to the native <a download> navigation, so it always works.
+  let cvBusy = false;
+  async function downloadCV(url) {
+    if (cvBusy) return false;
+    const name = (url.split("/").pop() || "David_Greve_CV.pdf").split("?")[0];
+    if (location.protocol === "file:" || typeof fetch !== "function") return false;
+    cvBusy = true;
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("http " + res.status);
+      const blob = await res.blob();
+      const obj = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = obj; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(obj), 5000);
+      toast("downloading · " + name);
+      return true;
+    } catch (_) {
+      return false; // let the native anchor handle it
+    } finally {
+      cvBusy = false;
+    }
+  }
+
   /* 8 — action dispatcher ------------------------------------------------ */
   function initActions(config) {
     const langs = config.languagesUI || ["EN"];
     let langIdx = 0;
+
+    // CV download for every <a data-cv> (hero / contact / dock).
+    // On http(s) we synchronously prevent the default navigation and force a
+    // clean blob download (nice filename, never opens inline). If the fetch
+    // fails we fall back to a programmatic navigation. On file:// (where fetch
+    // is blocked) we do nothing and let the native <a download> proceed.
+    document.addEventListener("click", (e) => {
+      const cv = e.target.closest("[data-cv]");
+      if (!cv || cv.dataset.action) return; // data-action variant handled below
+      if (location.protocol === "file:" || typeof fetch !== "function") return;
+      e.preventDefault();
+      downloadCV(config.identity.cv).then((ok) => {
+        if (!ok) {
+          const a = document.createElement("a");
+          a.href = config.identity.cv; a.download = "";
+          document.body.appendChild(a); a.click(); a.remove();
+        }
+      });
+    });
 
     document.addEventListener("click", (e) => {
       const trigger = e.target.closest("[data-action]");
@@ -206,17 +254,20 @@ window.CV = window.CV || {};
           e.preventDefault();
           const email = config.links.email;
           const done = () => toast("copied · " + email);
-          if (navigator.clipboard && navigator.clipboard.writeText) {
+          if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
             navigator.clipboard.writeText(email).then(done).catch(() => fallbackCopy(email, done));
           } else fallbackCopy(email, done);
           break;
         }
         case "download-cv": {
-          if (trigger.tagName !== "A") {
-            const a = document.createElement("a");
-            a.href = config.identity.cv; a.download = "";
-            document.body.appendChild(a); a.click(); a.remove();
-          }
+          e.preventDefault();
+          downloadCV(config.identity.cv).then((handled) => {
+            if (!handled) {
+              const a = document.createElement("a");
+              a.href = config.identity.cv; a.download = "";
+              document.body.appendChild(a); a.click(); a.remove();
+            }
+          });
           break;
         }
         case "toggle-theme": e.preventDefault(); toggleTheme(); break;

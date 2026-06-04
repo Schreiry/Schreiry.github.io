@@ -1,0 +1,306 @@
+/* =============================================================================
+ *  tactical.css  —  the OPERATIONAL layer
+ * -----------------------------------------------------------------------------
+ *  Loads after components.css. This is the "hard structure" half of the system:
+ *  glassmorphism stays the atmosphere; this adds the Marathon-like operational
+ *  language — corner brackets, HUD readouts, status LEDs, measured section
+ *  headers, the identity-node frame, and the inline-SVG icon family.
+ *
+ *  Rule of the layer: every line means something (status / index / type /
+ *  source / readout). No decoration for decoration's sake.
+ * ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+ *  Inline SVG icon family (from icons.js)
+ * ------------------------------------------------------------------------ */
+.svg-ico {
+  width: 1.15em; height: 1.15em;
+  display: block; flex: none;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------------------------------------------------------------------------
+ *  Status LED — the universal "signal" dot
+ * ------------------------------------------------------------------------ */
+.led {
+  display: inline-block; flex: none;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-tertiary);
+  box-shadow: 0 0 9px 0 var(--accent-tertiary), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+.led--rec { background: var(--accent-expressive); box-shadow: 0 0 9px 0 var(--accent-expressive); animation: led-blink 1.7s steps(1) infinite; }
+@keyframes led-blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+
+/* ---------------------------------------------------------------------------
+ *  Section header — index · title · descriptor · measured rule
+ * ------------------------------------------------------------------------ */
+.section-head {
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: clamp(14px, 2vw, 26px);
+  padding-bottom: clamp(16px, 1.6vw, 22px);
+  position: relative;
+}
+.section-head__index {
+  font-family: var(--font-mono);
+  font-size: clamp(1.8rem, 1.3rem + 1.8vw, 3rem);
+  font-weight: 500;
+  line-height: 0.9;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+  align-self: start;
+  position: relative;
+  padding-right: clamp(14px, 2vw, 26px);
+}
+.section-head__index::after {
+  content: ""; position: absolute; right: 0; top: 4px; bottom: 0;
+  width: 1px; background: linear-gradient(180deg, var(--glass-border-strong), transparent);
+}
+.section-head__titles { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.section-head__desc {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono); text-transform: uppercase;
+  color: var(--text-mono);
+}
+/* measured baseline rule with an end-tick — frames the whole section */
+.section-head::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background:
+    linear-gradient(90deg, var(--glass-border-strong) 0%, var(--glass-border) 60%, transparent 100%);
+}
+.section-head::before {
+  content: ""; position: absolute; right: 0; bottom: -3px;
+  width: 7px; height: 7px;
+  border-right: 1px solid var(--glass-border-strong);
+  border-bottom: 1px solid var(--glass-border-strong);
+}
+
+/* ---------------------------------------------------------------------------
+ *  HERO — operational identity readout
+ * ------------------------------------------------------------------------ */
+.hud-readout {
+  display: flex; flex-wrap: wrap;
+  width: max-content; max-width: 100%;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-sm);
+  background: rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+.hud-readout > div {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  border-right: 1px solid var(--glass-border);
+}
+.hud-readout > div:last-child { border-right: 0; }
+.hud-readout dt {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono); text-transform: uppercase;
+  color: var(--text-low);
+}
+.hud-readout dd {
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: 0.05em; color: var(--text-hi);
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ---------------------------------------------------------------------------
+ *  IDENTITY NODE  —  the portrait, rebuilt as a physical scan frame
+ *  (replaces the old organic "egg" squircle)
+ * ------------------------------------------------------------------------ */
+.id-frame {
+  --bezel: 12px;
+  position: relative;
+  width: clamp(250px, 31vw, 366px);
+  aspect-ratio: 5 / 6;
+  isolation: isolate;
+}
+/* accent glow halo, sitting behind the panel */
+.id-frame::before {
+  content: ""; position: absolute; inset: -6px; z-index: -1;
+  border-radius: 14px;
+  background: var(--grad-hero);
+  filter: blur(26px); opacity: 0.4;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.id-frame:hover::before { opacity: 0.62; }
+
+.id-frame__inner {
+  position: absolute; inset: 0;
+  padding: var(--bezel);
+  border-radius: 8px;
+  background: linear-gradient(155deg, var(--glass-surface-strong), var(--glass-surface));
+  border: 1px solid var(--glass-border-strong);
+  box-shadow:
+    var(--shadow-3),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+          backdrop-filter: blur(18px) saturate(150%);
+}
+
+.id-frame__media {
+  position: relative; width: 100%; height: 100%;
+  border-radius: 4px; overflow: hidden;
+  background: var(--bg-2);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.id-frame__img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.04) saturate(1.02); }
+
+/* cursor-reactive light + fine scanlines (the "live feed" feel) */
+.id-frame__scan {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    radial-gradient(42% 40% at var(--mx, 50%) var(--my, 40%), rgba(255, 255, 255, 0.18), transparent 70%),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(0, 0, 0, 0.07) 3px 4px);
+  mix-blend-mode: screen;
+}
+/* focus reticle — a measured crosshair that tracks the pointer */
+.id-frame__reticle {
+  position: absolute; z-index: 3; pointer-events: none;
+  left: var(--mx, 50%); top: var(--my, 42%);
+  width: 46px; height: 46px; transform: translate(-50%, -50%);
+  opacity: 0; transition: opacity var(--dur-base) var(--ease-out);
+  background:
+    linear-gradient(var(--accent-primary), var(--accent-primary)) 50% 0 / 1px 14px no-repeat,
+    linear-gradient(var(--accent-primary), var(--accent-primary)) 50% 100% / 1px 14px no-repeat,
+    linear-gradient(var(--accent-primary), var(--accent-primary)) 0 50% / 14px 1px no-repeat,
+    linear-gradient(var(--accent-primary), var(--accent-primary)) 100% 50% / 14px 1px no-repeat;
+}
+.id-frame:hover .id-frame__reticle { opacity: 0.85; }
+/* vertical measurement scale on the media edge */
+.id-frame__grid {
+  position: absolute; z-index: 3; pointer-events: none;
+  top: 14%; bottom: 14%; right: 6px; width: 8px;
+  background:
+    linear-gradient(var(--text-faint), var(--text-faint)) 100% 0 / 1px 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--text-low) 0 1px, transparent 1px 11px);
+  -webkit-mask: linear-gradient(90deg, transparent, #000);
+          mask: linear-gradient(90deg, transparent, #000);
+  opacity: 0.6;
+}
+
+/* top / bottom OSD readout bars */
+.id-frame__bar {
+  position: absolute; left: var(--bezel); right: var(--bezel);
+  z-index: 4; display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 6px 9px;
+  font-size: var(--fs-mono); letter-spacing: var(--tracking-mono); text-transform: uppercase;
+  color: var(--text-mid);
+  background: linear-gradient(180deg, rgba(5, 7, 13, 0.78), rgba(5, 7, 13, 0.42));
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.id-frame__bar--top { top: var(--bezel); border-bottom: 1px solid color-mix(in oklab, var(--accent-primary) 40%, transparent); }
+.id-frame__bar--bottom { bottom: var(--bezel); border-top: 1px solid color-mix(in oklab, var(--accent-primary) 40%, transparent); }
+.id-frame__handle { color: var(--text-hi); }
+.id-frame__rec { display: inline-flex; align-items: center; gap: 6px; color: var(--accent-expressive); }
+
+/* four corner brackets — the viewfinder */
+.id-frame__brk { position: absolute; z-index: 5; width: 22px; height: 22px; pointer-events: none; }
+.id-frame__brk--tl { top: -3px; left: -3px; border-top: 2px solid var(--accent-primary); border-left: 2px solid var(--accent-primary); }
+.id-frame__brk--br { bottom: -3px; right: -3px; border-bottom: 2px solid var(--accent-primary); border-right: 2px solid var(--accent-primary); }
+
+/* ---------------------------------------------------------------------------
+ *  TOPBAR — operational menu / status header
+ * ------------------------------------------------------------------------ */
+.topbar__brand { text-decoration: none; }
+.topbar__mark {
+  display: grid; place-items: center;
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  color: var(--accent-primary);
+  background: color-mix(in oklab, var(--accent-primary) 16%, var(--glass-surface));
+  border: 1px solid color-mix(in oklab, var(--accent-primary) 40%, transparent);
+}
+.topbar__mark .svg-ico { width: 15px; height: 15px; }
+.topbar__name { font-weight: 680; letter-spacing: 0.01em; color: var(--text-hi); }
+.topbar__name-dim { color: var(--text-low); font-weight: 500; }
+
+.topbar__menu { gap: clamp(10px, 1.4vw, 22px); }
+.topbar__menu a {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  color: var(--text-mid); font-size: var(--fs-sm); font-weight: 520;
+  padding: 4px 2px; position: relative;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.topbar__menu a i {
+  font-family: var(--font-mono); font-style: normal;
+  font-size: 0.62em; letter-spacing: 0.1em; color: var(--text-faint);
+}
+.topbar__menu a:hover { color: var(--text-hi); }
+.topbar__menu a[aria-current="true"] { color: var(--text-hi); }
+.topbar__menu a[aria-current="true"] i { color: var(--accent-primary); }
+.topbar__menu a[aria-current="true"]::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+  background: var(--accent-primary); box-shadow: 0 0 10px 0 var(--accent-primary);
+}
+
+.topbar__sig { display: inline-flex; align-items: center; gap: 8px; color: var(--text-mid); }
+.topbar__clock {
+  color: var(--text-hi);
+  padding: 3px 9px; border-radius: 7px;
+  background: rgba(0, 0, 0, 0.28); border: 1px solid var(--glass-border);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+ *  DOCK — SVG icons
+ * ------------------------------------------------------------------------ */
+.dock-item__glyph { display: grid; place-items: center; line-height: 1; }
+.dock-item__glyph .svg-ico { width: 24px; height: 24px; }
+.dock-item[data-mailto] .svg-ico,
+.dock-item:hover .svg-ico { color: inherit; }
+
+/* ---------------------------------------------------------------------------
+ *  BUTTONS / CARDS — icon sizing
+ * ------------------------------------------------------------------------ */
+.btn .ico { display: inline-flex; align-items: center; }
+.btn .ico .svg-ico { width: 1.08em; height: 1.08em; }
+.ico--toggle .svg-ico { transition: transform var(--dur-base) var(--ease-spring); }
+.workstation.is-open .ico--toggle .svg-ico { transform: rotate(45deg); }
+
+/* ---------------------------------------------------------------------------
+ *  CAPABILITY MODULE — icon + operational footer
+ * ------------------------------------------------------------------------ */
+.skill__glyph .svg-ico { width: 24px; height: 24px; }
+.skill__foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3); margin-top: auto; padding-top: var(--sp-2);
+}
+.skill__status {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono); text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+ *  SOCIAL / LIGHTBOX / SHOT — icon sizing
+ * ------------------------------------------------------------------------ */
+.social-card__glyph { display: grid; place-items: center; }
+.social-card__glyph .svg-ico { width: 22px; height: 22px; }
+.social-card__arrow .svg-ico { width: 18px; height: 18px; }
+.shot__zoom .svg-ico { width: 15px; height: 15px; }
+.lightbox__nav .svg-ico { width: 24px; height: 24px; }
+.lightbox__close .svg-ico { width: 19px; height: 19px; }
+
+/* ---------------------------------------------------------------------------
+ *  PROJECT WORKSTATION — corner brackets (tactical frame on the centerpiece)
+ * ------------------------------------------------------------------------ */
+.workstation::before,
+.workstation::after {
+  content: ""; position: absolute; z-index: 6; width: 16px; height: 16px;
+  pointer-events: none; opacity: 0.55;
+  transition: opacity var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+.workstation::before { top: 12px; left: 12px; border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
+.workstation::after  { bottom: 12px; right: 12px; border-bottom: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
+.workstation:hover::before, .workstation:hover::after { opacity: 1; }
+
+/* ---------------------------------------------------------------------------
+ *  Light-theme touch-ups for the operational layer
+ * ------------------------------------------------------------------------ */
+:root[data-theme="light"] .id-frame__bar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.5));
+  color: var(--text-mid);
+}
+:root[data-theme="light"] .topbar__clock { background: rgba(255, 255, 255, 0.6); }

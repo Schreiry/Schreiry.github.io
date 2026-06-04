@@ -9,6 +9,7 @@ window.CV = window.CV || {};
   const esc = (s) =>
     String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const ICO = (name) => (window.CV.icon ? window.CV.icon(name) : "");
 
   function metaRow(meta) {
     return (meta || [])
@@ -29,7 +30,7 @@ window.CV = window.CV || {};
           <img src="${esc(s.src)}" alt="${esc(p.title)} — ${esc(s.label || "screenshot")}"
                loading="lazy" decoding="async" width="1600" height="874" />
           <span class="shot__label mono">${esc(s.label || "")}</span>
-          <span class="shot__zoom" aria-hidden="true">⤢</span>
+          <span class="shot__zoom" aria-hidden="true">${ICO("expand")}</span>
         </button>`
       )
       .join("");
@@ -68,12 +69,12 @@ window.CV = window.CV || {};
         <div class="ws-actions">
           <a class="btn btn--primary btn--sm" data-magnetic
              href="${esc(p.repo)}" target="_blank" rel="noopener noreferrer">
-            <span class="ico" aria-hidden="true">↗</span> View on GitHub
+            <span class="ico" aria-hidden="true">${ICO("external")}</span> View on GitHub
           </a>
           <button class="btn btn--ghost btn--sm" type="button"
                   data-action="toggle-details" aria-expanded="false"
                   aria-controls="ws-${esc(p.id)}-details">
-            <span class="ico" aria-hidden="true">⊕</span>
+            <span class="ico ico--toggle" aria-hidden="true">${ICO("plus")}</span>
             <span data-label>Open details</span>
           </button>
         </div>

@@ -50,11 +50,6 @@
   border-radius: var(--r-pill);
 }
 .topbar__brand { display: flex; align-items: center; gap: var(--sp-3); font-weight: 650; color: var(--text-hi); }
-.topbar__dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--accent-tertiary);
-  box-shadow: 0 0 12px 1px var(--accent-tertiary);
-}
 .topbar__menu { display: flex; gap: var(--sp-5); margin-left: var(--sp-3); }
 .topbar__menu a { color: var(--text-mid); font-size: var(--fs-sm); }
 .topbar__status { margin-left: auto; display: flex; align-items: center; gap: var(--sp-4); }

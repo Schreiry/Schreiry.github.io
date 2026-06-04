@@ -20,6 +20,9 @@
 /* ---- new grids collapse ---------------------------------------------- */
 @media (max-width: 1024px) {
   .focus-grid { grid-template-columns: repeat(2, 1fr); }
+  /* save topbar width: drop the menu index numerals, keep labels */
+  .topbar__menu a i { display: none; }
+  .topbar__menu { gap: clamp(8px, 1.2vw, 16px); }
 }
 
 /* ---- tablet ----------------------------------------------------------- */
@@ -48,6 +51,12 @@
 
   .matrix { grid-template-columns: 1fr; }
   .focus-grid { grid-template-columns: 1fr; }
+
+  /* identity readout stacks; brackets/measure overlays calm down */
+  .hud-readout { width: 100%; flex-direction: column; }
+  .hud-readout > div { border-right: 0; border-bottom: 1px solid var(--glass-border); width: 100%; }
+  .hud-readout > div:last-child { border-bottom: 0; }
+  .section-head__index { font-size: 1.7rem; }
   .gh-stats { grid-template-columns: repeat(2, 1fr); }
   .gh-langs { grid-template-columns: 1fr; }
   .ws-gallery__grid { grid-template-columns: 1fr 1fr; }

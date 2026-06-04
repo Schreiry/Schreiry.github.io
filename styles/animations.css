@@ -44,15 +44,6 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .blob--2 { animation: drift-2 27s var(--ease-inout) infinite; }
 .blob--3 { animation: drift-3 31s var(--ease-inout) infinite; }
 
-/* gently morph the portrait's organic squircle so it feels alive (Material You)
-   — kept subtle so the photo stays undistorted and harmonious */
-@keyframes morph {
-  0%, 100% { border-radius: 38% 42% 40% 36% / 34% 36% 40% 38%; }
-  33%      { border-radius: 42% 36% 38% 42% / 38% 40% 34% 36%; }
-  66%      { border-radius: 36% 40% 42% 38% / 40% 34% 38% 42%; }
-}
-.portrait { animation: morph 16s var(--ease-inout) infinite; }
-
 /* ---- hero gradient drift -------------------------------------------- */
 @keyframes grad-shift {
   0%   { background-position: 0% 50%; }

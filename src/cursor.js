@@ -29,7 +29,7 @@ window.CV.initCursor = function () {
   document.documentElement.classList.add("has-cursor");
 
   const LINK = "a, button, [role='button'], .tag, .dock-item, .facet, summary, label, .shot";
-  const CARD = ".workstation, .skill, .panel, .portrait, .gh-stat";
+  const CARD = ".workstation, .skill, .panel, .id-frame, .gh-stat";
 
   let mx = innerWidth / 2, my = innerHeight / 2;
   let rx = mx, ry = my;

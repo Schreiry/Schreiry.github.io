@@ -16,6 +16,10 @@ desktop.ini
 
 # Tooling / agent config
 .claude/
+CLAUDE.md
+
+# Repo hygiene — kept locally, not published to the live site
+README.md
 
 # Node (only if you ever add tooling)
 node_modules/

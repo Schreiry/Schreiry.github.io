@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>David Greve - Schreiry · Software Engineer</title>
 
-  <meta name="description" content="David Greve (Schreiry) — Software Engineer & Computer Engineering student. Python, Rust, C++, high-performance computing, simulation systems, backend logic, and visual design. A living, glass-based CV interface." />
+  <meta name="description" content="David Greve (Schreiry) — Software Engineer & Computer Science student. Python, Rust, C++, high-performance computing, simulation systems, backend logic, and visual design. A living, glass-based CV interface." />
   <meta name="author" content="David Greve" />
   <meta name="theme-color" content="#05070d" />
   <meta name="color-scheme" content="dark light" />
@@ -38,12 +38,14 @@
   <link rel="stylesheet" href="./styles/layout.css" />
   <link rel="stylesheet" href="./styles/glass.css" />
   <link rel="stylesheet" href="./styles/components.css" />
+  <link rel="stylesheet" href="./styles/tactical.css" />
   <link rel="stylesheet" href="./styles/animations.css" />
   <link rel="stylesheet" href="./styles/responsive.css" />
 
   <!-- Classic ordered scripts (NOT ES modules) so the site works when opened
        directly as a file (file://) AND on GitHub Pages. defer = run in order. -->
   <script defer src="./src/config.js"></script>
+  <script defer src="./src/icons.js"></script>
   <script defer src="./src/github.js"></script>
   <script defer src="./src/shader.js"></script>
   <script defer src="./src/projects.js"></script>
@@ -63,32 +65,35 @@
   <!-- animated light field (WebGL → CSS aurora fallback) -->
   <canvas id="bg-shader" aria-hidden="true"></canvas>
 
-  <!-- ambient Material-You blobs + organic shapes -->
+  <!-- ambient Material-You light field (atmosphere layer) -->
   <div class="blob-field" aria-hidden="true">
     <span class="blob blob--1"></span>
     <span class="blob blob--2"></span>
     <span class="blob blob--3"></span>
-    <span class="shape shape--flower"></span>
   </div>
 
-  <!-- ===== OS-style top bar ===================================== -->
+  <!-- ===== operational top bar (OS menu / status header) ============ -->
   <header class="topbar glass glass--strong" role="banner">
-    <div class="topbar__brand">
-      <span class="topbar__dot" aria-hidden="true"></span>
-      <span>portfolio<span style="color:var(--text-low)">.os</span></span>
-    </div>
+    <a class="topbar__brand" href="#hero" aria-label="portfolio.os — home">
+      <span class="topbar__mark" aria-hidden="true" data-ico="node"></span>
+      <span class="topbar__name">portfolio<span class="topbar__name-dim">.os</span></span>
+    </a>
+
     <nav class="topbar__menu" aria-label="Primary">
-      <a href="#about">Profile</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#design">Design</a>
-      <a href="#hardware">Systems</a>
-      <a href="#ai">AI</a>
-      <a href="#contact">Contact</a>
+      <a href="#about"><i aria-hidden="true">01</i>Profile</a>
+      <a href="#skills"><i aria-hidden="true">02</i>Skills</a>
+      <a href="#projects"><i aria-hidden="true">03</i>Projects</a>
+      <a href="#design"><i aria-hidden="true">04</i>Design</a>
+      <a href="#hardware"><i aria-hidden="true">05</i>Systems</a>
+      <a href="#ai"><i aria-hidden="true">06</i>AI</a>
+      <a href="#contact"><i aria-hidden="true">07</i>Contact</a>
     </nav>
+
     <div class="topbar__status">
-      <span class="mono hide-sm" data-bind="microcopy.signal">signal: available</span>
-      <span class="mono" id="clock">—</span>
+      <span class="topbar__sig mono hide-sm">
+        <span class="led" aria-hidden="true"></span><span data-bind="microcopy.signal">signal: available</span>
+      </span>
+      <span class="topbar__clock mono" id="clock" aria-label="Local time">—:—</span>
     </div>
   </header>
 
@@ -99,7 +104,7 @@
         <div class="hero__left">
           <div class="hero__eyebrow reveal">
             <span class="badge"><span class="pulse" aria-hidden="true"></span><span data-bind="microcopy.signal">signal: available</span></span>
-            <span class="mono">00 / identity</span>
+            <span class="mono">00 / identity node</span>
           </div>
 
           <h1 id="hero-title" class="hero__title text-grad glass-text lume reveal" data-bind="identity.name">David Greve</h1>
@@ -109,30 +114,50 @@
             — <span data-bind="identity.role">Software Engineer</span>
           </p>
 
-          <p class="hero__descriptor reveal" data-bind="identity.descriptor">
-            Python / Rust / C++ · HPC · Simulation Systems · Backend Logic · Visual Systems
-          </p>
+          <!-- operational identity readout -->
+          <dl class="hud-readout reveal" aria-label="Operator readout">
+            <div><dt>status</dt><dd><span class="led" aria-hidden="true"></span>available</dd></div>
+            <div><dt>mode</dt><dd>portfolio.os</dd></div>
+            <div><dt>focus</dt><dd>software · systems · visual logic</dd></div>
+          </dl>
 
           <p class="hero__text reveal" data-bind="identity.hero">
             I build technical software where performance, structure, and interface behavior matter.
           </p>
 
           <div class="hero__actions reveal">
-            <a class="btn btn--primary" data-cv data-magnetic href="#"><span class="ico" aria-hidden="true">⬇</span> Download CV</a>
-            <a class="btn" data-href="links.github" data-magnetic target="_blank" rel="noopener noreferrer"><span class="ico" aria-hidden="true">↗</span> GitHub</a>
+            <a class="btn btn--primary" data-cv data-magnetic href="#"><span class="ico" data-ico="download" aria-hidden="true"></span> Download CV</a>
+            <a class="btn" data-href="links.github" data-magnetic target="_blank" rel="noopener noreferrer"><span class="ico" data-ico="github" aria-hidden="true"></span> GitHub</a>
             <a class="btn btn--ghost" href="#projects" data-magnetic>Projects</a>
             <a class="btn btn--ghost" href="#contact" data-magnetic>Contact</a>
           </div>
         </div>
 
         <div class="hero__right reveal">
-          <figure class="portrait tilt">
-            <img class="portrait__img" data-photo alt="" width="380" height="456" />
-            <span class="portrait__scan" aria-hidden="true"></span>
-            <span class="portrait__corner portrait__corner--tl" aria-hidden="true"></span>
-            <span class="portrait__corner portrait__corner--br" aria-hidden="true"></span>
-            <figcaption class="portrait__tag badge mono">@<span data-bind="identity.handle">schreiry</span></figcaption>
-            <span class="measure-dim measure" aria-hidden="true">5 : 6 · frame</span>
+          <!-- identity node: a physical, technological scan frame (not a blob) -->
+          <figure class="id-frame tilt" aria-label="Identity scan frame">
+            <div class="id-frame__inner">
+              <div class="id-frame__media">
+                <img class="id-frame__img" data-photo alt="" width="380" height="456" />
+                <span class="id-frame__scan" aria-hidden="true"></span>
+                <span class="id-frame__reticle" aria-hidden="true"></span>
+                <span class="id-frame__grid" aria-hidden="true"></span>
+              </div>
+
+              <div class="id-frame__bar id-frame__bar--top mono" aria-hidden="true">
+                <span>id · subject</span>
+                <span class="id-frame__rec"><span class="led led--rec"></span>scan</span>
+              </div>
+              <figcaption class="id-frame__bar id-frame__bar--bottom mono">
+                <span class="id-frame__handle">@<span data-bind="identity.handle">schreiry</span></span>
+                <span aria-hidden="true">5:6 · frame</span>
+              </figcaption>
+
+              <span class="id-frame__scale" aria-hidden="true"></span>
+            </div>
+
+            <span class="id-frame__brk id-frame__brk--tl" aria-hidden="true"></span>
+            <span class="id-frame__brk id-frame__brk--br" aria-hidden="true"></span>
           </figure>
         </div>
       </div>
@@ -142,7 +167,10 @@
     <section id="about" class="section container" aria-labelledby="about-title">
       <div class="section-head reveal">
         <span class="section-head__index">01</span>
-        <h2 class="section-head__title lume" id="about-title">System&nbsp;Profile</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="about-title">System&nbsp;Profile</h2>
+          <span class="section-head__desc">operator record · origin · current focus</span>
+        </div>
         <span class="section-head__measure measure measure--tick">about / module</span>
       </div>
 
@@ -150,7 +178,7 @@
         <div class="about__lead glass glass--lg glass-spec tilt reveal">
           <span class="spec" aria-hidden="true"></span>
           <span class="measure-abs mono" aria-hidden="true">id.00</span>
-          <p data-bind="identity.about">Computer Engineering student…</p>
+          <p data-bind="identity.about">Computer Science student…</p>
           <div class="status-strip" style="margin-top:var(--sp-5)" aria-hidden="true">
             <span data-bind="microcopy.runtime">runtime: human</span><span class="dotsep"></span>
             <span data-bind="microcopy.stack">stack: python/rust/c++</span><span class="dotsep"></span>
@@ -175,7 +203,10 @@
     <section id="skills" class="section container container--wide" aria-labelledby="skills-title">
       <div class="section-head reveal">
         <span class="section-head__index">02</span>
-        <h2 class="section-head__title lume" id="skills-title">Capability&nbsp;Matrix</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="skills-title">Capability&nbsp;Matrix</h2>
+          <span class="section-head__desc">skill modules · status: active</span>
+        </div>
         <span class="section-head__measure measure measure--tick">grid · auto-fit / 280px</span>
       </div>
       <div id="skill-matrix" class="matrix"></div>
@@ -185,7 +216,10 @@
     <section id="projects" class="section container container--wide" aria-labelledby="projects-title">
       <div class="section-head reveal">
         <span class="section-head__index">03</span>
-        <h2 class="section-head__title lume" id="projects-title">Project&nbsp;Workstations</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="projects-title">Project&nbsp;Workstations</h2>
+          <span class="section-head__desc">build archive · selected systems · source available</span>
+        </div>
         <span class="section-head__measure measure measure--tick">06 builds / archive</span>
       </div>
 
@@ -226,7 +260,10 @@
     <section id="design" class="section container" aria-labelledby="design-title">
       <div class="section-head reveal">
         <span class="section-head__index">04</span>
-        <h2 class="section-head__title lume" id="design-title">Design &amp; Visual&nbsp;Taste</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="design-title">Design &amp; Visual&nbsp;Taste</h2>
+          <span class="section-head__desc">atmosphere layer · composition · color · tactility</span>
+        </div>
         <span class="section-head__measure measure measure--tick">layer / atmosphere</span>
       </div>
 
@@ -256,7 +293,10 @@
     <section id="hardware" class="section container" aria-labelledby="hardware-title">
       <div class="section-head reveal">
         <span class="section-head__index">05</span>
-        <h2 class="section-head__title lume" id="hardware-title">Hardware &amp; Systems</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="hardware-title">Hardware &amp; Systems</h2>
+          <span class="section-head__desc">close to the metal · assembly · diagnostics · tuning</span>
+        </div>
         <span class="section-head__measure measure measure--tick">diagnostics / panel</span>
       </div>
 
@@ -278,7 +318,10 @@
     <section id="ai" class="section container" aria-labelledby="ai-title">
       <div class="section-head reveal">
         <span class="section-head__index">06</span>
-        <h2 class="section-head__title lume" id="ai-title">AI-Assisted&nbsp;Development</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="ai-title">AI-Assisted&nbsp;Development</h2>
+          <span class="section-head__desc">workflow · human-led · ai-amplified</span>
+        </div>
         <span class="section-head__measure measure measure--tick">workflow / human-led</span>
       </div>
 
@@ -295,7 +338,10 @@
     <section id="contact" class="section container" aria-labelledby="contact-title">
       <div class="section-head reveal">
         <span class="section-head__index">07</span>
-        <h2 class="section-head__title lume" id="contact-title">Contact &amp; Command&nbsp;Center</h2>
+        <div class="section-head__titles">
+          <h2 class="section-head__title lume" id="contact-title">Contact &amp; Command&nbsp;Center</h2>
+          <span class="section-head__desc">open channel · signal available</span>
+        </div>
         <span class="section-head__measure measure measure--tick">signal / open</span>
       </div>
 
@@ -311,13 +357,13 @@
             <span data-bind="links.email">email</span>
           </p>
           <div class="hero__actions" style="margin-top:0">
-            <button class="btn btn--primary" type="button" data-action="copy-email" data-magnetic>
-              <span class="ico" aria-hidden="true">@</span> Copy email
+            <a class="btn btn--primary" data-mailto data-magnetic href="#"><span class="ico" data-ico="mail" aria-hidden="true"></span> Mail</a>
+            <button class="btn" type="button" data-action="copy-email" data-magnetic>
+              <span class="ico" data-ico="copy" aria-hidden="true"></span> Copy email
             </button>
-            <a class="btn" data-mailto data-magnetic href="#"><span class="ico" aria-hidden="true">✉</span> Mail</a>
-            <a class="btn btn--ghost" data-href="links.github" data-magnetic target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a class="btn btn--ghost" data-href="links.linkedin" data-magnetic target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn btn--ghost" data-cv data-magnetic href="#">Download CV</a>
+            <a class="btn btn--ghost" data-href="links.github" data-magnetic target="_blank" rel="noopener noreferrer"><span class="ico" data-ico="github" aria-hidden="true"></span> GitHub</a>
+            <a class="btn btn--ghost" data-href="links.linkedin" data-magnetic target="_blank" rel="noopener noreferrer"><span class="ico" data-ico="linkedin" aria-hidden="true"></span> LinkedIn</a>
+            <a class="btn btn--ghost" data-cv data-magnetic href="#"><span class="ico" data-ico="download" aria-hidden="true"></span> Download CV</a>
           </div>
           <div class="tags" style="margin-top:var(--sp-2)">
             <a class="tag" data-href="links.instagram" target="_blank" rel="noopener noreferrer">Instagram</a>
@@ -331,12 +377,12 @@
           <div class="status-strip" style="flex-direction:column;align-items:flex-start;gap:8px" aria-hidden="true">
             <span data-bind="microcopy.mode">mode: portfolio.os</span>
             <span data-bind="microcopy.signal">signal: available</span>
-            <span data-bind="microcopy.focus">focus: hpc/simulation/backend</span>
-            <span data-bind="microcopy.build">build: stable · glass-on-glass · v1.0</span>
+            <span data-bind="microcopy.channel">channel: open</span>
+            <span data-bind="microcopy.focus">focus: software · systems · visual logic</span>
           </div>
           <p class="panel__lead" style="font-size:var(--fs-sm)">
-            Use the dock below — copy the email, open GitHub, grab the CV, switch the theme,
-            or preview language modes (EN active; RU / KA planned).
+            Use the dock below — open mail, copy the address, jump to GitHub, grab the CV,
+            switch the theme, or preview language modes (EN active; RU / KA planned).
           </p>
         </aside>
       </div>
@@ -347,7 +393,7 @@
     </section>
 
     <footer class="footer container">
-      <p class="mono" data-bind="microcopy.build">information about me</p>
+      <p class="mono" data-bind="microcopy.signature">operational glass interface</p>
       <p style="margin-top:8px">
         <strong style="color:var(--text-hi)" data-bind="identity.name">David Greve</strong>
         · <span data-bind="identity.handle">Schreiry</span> 2026
