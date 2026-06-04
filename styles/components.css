@@ -171,7 +171,8 @@
   position: relative;
   width: clamp(240px, 30vw, 380px);
   aspect-ratio: 5 / 6;
-  border-radius: var(--r-blob);
+  /* harmonious organic squircle (gently animated by @keyframes morph) */
+  border-radius: 38% 42% 40% 36% / 34% 36% 40% 38%;
   padding: 10px;
   background: linear-gradient(150deg, var(--glass-surface-strong), var(--glass-surface));
   border: 1px solid var(--glass-border-strong);
@@ -191,7 +192,7 @@
 .portrait__img {
   width: 100%; height: 100%;
   object-fit: cover;
-  border-radius: calc(var(--r-blob));
+  border-radius: inherit;   /* follow the frame's (morphing) organic shape */
   display: block;
 }
 .portrait__scan { /* cursor-reactive light + scanline measurement detail */

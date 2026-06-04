@@ -153,32 +153,7 @@ window.CV.config = {
   // shots = optional screenshot gallery (web-optimized images).
   projects: [
     {
-      id: "exsul", index: "01", title: "Exsul",
-      role: "Svelte · Application Identity & Interface",
-      language: "Svelte", year: "2026", status: "design", accent: "primary",
-      repo: "https://github.com/Schreiry/Exsul", repoName: "Exsul",
-      summary:
-        "A polished desktop-class application with a full glass interface: product catalog, order pipelines, contact maps, backup/sync, and deep appearance controls — built on a Svelte front end with a strong, system-like visual language.",
-      ideas: ["Svelte", "Glass UI system", "Catalog & orders", "Settings / theming", "Backup · Google Drive", "Dark high-contrast"],
-      meta: [{ k: "stack", v: "svelte" }, { k: "kind", v: "app" }, { k: "ui", v: "glass" }],
-      shots: [
-        { src: "./images/shots/exsul-catalog.jpg", label: "Workshop Catalog" },
-        { src: "./images/shots/exsul-orders.jpg", label: "Orders & Contacts" },
-        { src: "./images/shots/exsul-settings.jpg", label: "Settings · Appearance" },
-      ],
-    },
-    {
-      id: "fluminum", index: "02", title: "Fluminum",
-      role: "HPC · Matrix Computation Engine",
-      language: "C++", year: "2025", status: "stable", accent: "secondary",
-      repo: "https://github.com/Schreiry/fluminum", repoName: "fluminum",
-      summary:
-        "C++ high-performance matrix computation engine focused on Strassen multiplication, SIMD-oriented acceleration, multithreading, memory estimation, benchmarking, and hardware-aware execution.",
-      ideas: ["Strassen multiplication", "SIMD", "AVX / SSE", "Multithreading", "Memory estimation", "Benchmarking", "CSV logs", "Console interface"],
-      meta: [{ k: "lang", v: "C++17" }, { k: "cores", v: "multi" }, { k: "out", v: "csv" }],
-    },
-    {
-      id: "flust", index: "03", title: "Flust",
+      id: "flust", index: "01", title: "Flust",
       role: "Rust · Computation Platform & TUI",
       language: "Rust", year: "2026", status: "active", accent: "expressive",
       repo: "https://github.com/Schreiry/Flust", repoName: "Flust",
@@ -193,7 +168,22 @@ window.CV.config = {
       ],
     },
     {
-      id: "alife", index: "04", title: "Alife",
+      id: "exsul", index: "02", title: "Exsul",
+      role: "Svelte · Application Identity & Interface",
+      language: "Svelte", year: "2026", status: "design", accent: "primary",
+      repo: "https://github.com/Schreiry/Exsul", repoName: "Exsul",
+      summary:
+        "A polished desktop-class application with a full glass interface: product catalog, order pipelines, contact maps, backup/sync, and deep appearance controls — built on a Svelte front end with a strong, system-like visual language.",
+      ideas: ["Svelte", "Glass UI system", "Catalog & orders", "Settings / theming", "Backup · Google Drive", "Dark high-contrast"],
+      meta: [{ k: "stack", v: "svelte" }, { k: "kind", v: "app" }, { k: "ui", v: "glass" }],
+      shots: [
+        { src: "./images/shots/exsul-catalog.jpg", label: "Workshop Catalog" },
+        { src: "./images/shots/exsul-orders.jpg", label: "Orders & Contacts" },
+        { src: "./images/shots/exsul-settings.jpg", label: "Settings · Appearance" },
+      ],
+    },
+    {
+      id: "alife", index: "03", title: "Alife",
       role: "Python · Artificial Life Simulation",
       language: "Python", year: "2026", status: "active", accent: "tertiary",
       repo: "https://github.com/Schreiry/Alife", repoName: "Alife",
@@ -208,7 +198,7 @@ window.CV.config = {
       ],
     },
     {
-      id: "aesculapius", index: "05", title: "AESCULAPIUS",
+      id: "aesculapius", index: "04", title: "AESCULAPIUS",
       role: "Flask · SQL Server Prototype",
       language: "Python / SQL", year: "2026", status: "prototype", accent: "secondary",
       repo: "https://github.com/Schreiry/AESCULAPIUS", repoName: "AESCULAPIUS",
@@ -219,6 +209,16 @@ window.CV.config = {
       shots: [
         { src: "./images/shots/aesculapius.jpg", label: "Monitoring console" },
       ],
+    },
+    {
+      id: "fluminum", index: "05", title: "Fluminum",
+      role: "HPC · Matrix Computation Engine",
+      language: "C++", year: "2025", status: "stable", accent: "secondary",
+      repo: "https://github.com/Schreiry/fluminum", repoName: "fluminum",
+      summary:
+        "C++ high-performance matrix computation engine focused on Strassen multiplication, SIMD-oriented acceleration, multithreading, memory estimation, benchmarking, and hardware-aware execution.",
+      ideas: ["Strassen multiplication", "SIMD", "AVX / SSE", "Multithreading", "Memory estimation", "Benchmarking", "CSV logs", "Console interface"],
+      meta: [{ k: "lang", v: "C++17" }, { k: "cores", v: "multi" }, { k: "out", v: "csv" }],
     },
     {
       id: "labs", index: "06", title: "Experiments & Labs",
