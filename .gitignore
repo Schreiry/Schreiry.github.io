@@ -1,0 +1,20 @@
+# Original full-resolution source images — web-optimized copies live in /images.
+# (Keeps the Pages repo lean; delete these locally whenever you like.)
+3-2R.png
+Screenshot *.png
+*.psd
+*.xcf
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+
+# Tooling / agent config
+.claude/
+
+# Node (only if you ever add tooling)
+node_modules/
+npm-debug.log*

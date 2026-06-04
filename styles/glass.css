@@ -1,0 +1,192 @@
+/* =============================================================================
+ *  glass.css  —  the glassmorphism engine
+ *  Layered translucent panes, refraction illusion, moving specular highlight,
+ *  cursor-reactive inner light, glass-on-glass nesting, and readable glass text.
+ *
+ *  Cursor variables (--mx/--my, 0–100%) are written per-element by
+ *  interactions.js; tilt (--rx/--ry) too. Everything degrades gracefully.
+ * ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+ *  Base glass surface
+ * ------------------------------------------------------------------------ */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg,
+      var(--glass-surface-2) 0%,
+      var(--glass-surface) 100%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  box-shadow:
+    var(--shadow-2),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    inset 0 -24px 60px -40px var(--glass-inner-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+          backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  overflow: hidden;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+/* Top sheen / light-entry edge — the "glass catches light" highlight.
+ * Subtly tracks the pointer so refraction feels alive. */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 80% at var(--mx, 50%) -10%,
+      rgba(255, 255, 255, 0.22) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 22%);
+  opacity: 0.9;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+/* Cursor-reactive inner light + chromatic refraction hint (glass-on-glass). */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  background:
+    radial-gradient(36% 50% at var(--mx, 50%) var(--my, 50%),
+      hsl(var(--c-primary-h) var(--c-primary-s) 70% / 0.28) 0%, transparent 70%),
+    radial-gradient(70% 90% at calc(var(--mx, 50%) + 8%) calc(var(--my, 50%) + 6%),
+      hsl(var(--c-secondary-h) var(--c-secondary-s) 72% / 0.16) 0%, transparent 75%);
+  mix-blend-mode: screen;
+}
+.glass:hover::after,
+.glass:focus-within::after { opacity: 1; }
+
+.glass:hover {
+  border-color: var(--glass-border-strong);
+  box-shadow:
+    var(--shadow-3),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--glow-soft);
+}
+
+/* ---- variants ------------------------------------------------------- */
+.glass--strong {
+  background: linear-gradient(180deg, var(--glass-surface-strong), var(--glass-surface-2));
+  border-color: var(--glass-border-strong);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+          backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+}
+.glass--bare { box-shadow: var(--shadow-1), inset 0 1px 0 rgba(255,255,255,0.18); }
+.glass--lg { border-radius: var(--r-lg); }
+.glass--xl { border-radius: var(--r-xl); }
+.glass--pill { border-radius: var(--r-pill); }
+
+/* Specular light streak that sweeps with the pointer — the "lens" feel. */
+.glass-spec { position: relative; }
+.glass-spec > .spec {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.0) 40%,
+    rgba(255, 255, 255, 0.16) 50%,
+    rgba(255, 255, 255, 0.0) 60%,
+    transparent 100%);
+  background-size: 220% 100%;
+  background-position: calc(var(--mx, 50%) * -1) 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.glass-spec:hover > .spec { opacity: 0.7; }
+
+/* ---------------------------------------------------------------------------
+ *  3D tilt — the Steam-card physicality.
+ *  The perspective lives in the element's OWN transform (not an ancestor),
+ *  so backdrop-filter on the glass keeps sampling the page behind it.
+ *  --rx/--ry are written by interactions.js; .is-tilting tightens the easing
+ *  while the pointer is over the card, then it springs back on leave.
+ * ------------------------------------------------------------------------ */
+.tilt {
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform var(--dur-slow) var(--ease-spring);
+  will-change: transform;
+}
+.tilt.is-tilting { transition: transform 0.07s linear; }
+
+/* ---------------------------------------------------------------------------
+ *  Glass text — luminous, but never sacrificing legibility.
+ *  Headings get the gradient + a soft highlight that follows the cursor.
+ *  Body text stays solid and readable.
+ * ------------------------------------------------------------------------ */
+.glass-text {
+  position: relative;
+  background: var(--grad-text);
+  background-size: 220% 100%;
+  background-position: var(--mx, 50%) 0;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: 0 1px 30px hsl(var(--c-primary-h) var(--c-primary-s) 60% / 0.18);
+  transition: background-position var(--dur-slow) var(--ease-out);
+}
+
+/* Hoverable inline/heading text: leaves a brief luminous trail under cursor.
+ * Applied broadly to copy via JS-set --mx/--my on the element. */
+.lume {
+  position: relative;
+  transition: color var(--dur-base) var(--ease-out),
+              text-shadow var(--dur-base) var(--ease-out);
+}
+.lume:hover {
+  color: var(--text-hi);
+  text-shadow:
+    0 0 1px rgba(255, 255, 255, 0.4),
+    0 0 22px hsl(var(--c-primary-h) var(--c-primary-s) 65% / 0.45);
+}
+
+/* ---- frosted divider / hairline ------------------------------------ */
+.hairline {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent,
+    var(--glass-border-strong) 18%, var(--glass-border-strong) 82%, transparent);
+}
+
+/* ---------------------------------------------------------------------------
+ *  Fallbacks
+ * ------------------------------------------------------------------------ */
+/* No backdrop-filter (older Firefox / disabled): make glass opaque enough. */
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass {
+    background: linear-gradient(180deg,
+      rgba(20, 26, 42, 0.92), rgba(12, 17, 30, 0.92));
+  }
+  :root[data-theme="light"] .glass {
+    background: linear-gradient(180deg,
+      rgba(255, 255, 255, 0.92), rgba(238, 243, 252, 0.92));
+  }
+}
+
+/* Low-power / "lite" mode (set on <html> by JS) drops blur cost. */
+:root.perf-lite .glass {
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+          backdrop-filter: blur(8px) saturate(120%);
+}
+:root.perf-lite .glass--strong {
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+          backdrop-filter: blur(12px) saturate(120%);
+}

@@ -1,0 +1,181 @@
+/* =============================================================================
+ *  variables.css  —  design tokens
+ *  The whole visual system is driven from here. Change a token, change the site.
+ *  Palette philosophy: Material You / Pixel "expressive" tones, manually tuned,
+ *  on a near-black premium base.
+ * ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- base surfaces -------------------------------------------------- */
+  --bg-0: #05070d;            /* page floor (near black) */
+  --bg-1: #080b14;            /* deep graphite */
+  --bg-2: #0c111e;            /* midnight-blue surface */
+  --bg-grid: rgba(150, 180, 230, 0.045);
+
+  /* ---- Material You expressive accents -------------------------------- */
+  /* hues kept as components so tints/shades can be generated on the fly */
+  --c-primary-h: 205; --c-primary-s: 100%; --c-primary-l: 72%;
+  --c-secondary-h: 256; --c-secondary-s: 100%; --c-secondary-l: 80%;
+  --c-tertiary-h: 158; --c-tertiary-s: 78%; --c-tertiary-l: 72%;
+  --c-expressive-h: 352; --c-expressive-s: 100%; --c-expressive-l: 75%;
+
+  --accent-primary:    hsl(var(--c-primary-h)   var(--c-primary-s)   var(--c-primary-l));   /* sky / pixel blue */
+  --accent-secondary:  hsl(var(--c-secondary-h) var(--c-secondary-s) var(--c-secondary-l)); /* orchid violet  */
+  --accent-tertiary:   hsl(var(--c-tertiary-h)  var(--c-tertiary-s)  var(--c-tertiary-l));  /* mint           */
+  --accent-expressive: hsl(var(--c-expressive-h) var(--c-expressive-s) var(--c-expressive-l)); /* coral (rare) */
+
+  /* live accent — components retint this per section/card */
+  --accent: var(--accent-primary);
+  --accent-2: var(--accent-secondary);
+
+  /* ---- gradients ------------------------------------------------------ */
+  --grad-hero: linear-gradient(135deg,
+      var(--accent-primary) 0%,
+      var(--accent-secondary) 48%,
+      var(--accent-tertiary) 100%);
+  --grad-aurora: radial-gradient(120% 120% at 18% 0%,
+      hsl(var(--c-secondary-h) var(--c-secondary-s) 60% / 0.30) 0%, transparent 55%),
+    radial-gradient(120% 120% at 100% 30%,
+      hsl(var(--c-primary-h) var(--c-primary-s) 60% / 0.26) 0%, transparent 50%),
+    radial-gradient(120% 120% at 60% 110%,
+      hsl(var(--c-tertiary-h) var(--c-tertiary-s) 55% / 0.20) 0%, transparent 55%);
+  --grad-text: linear-gradient(120deg,
+      #ffffff 0%, var(--accent-primary) 38%, var(--accent-secondary) 70%, #ffffff 100%);
+
+  /* ---- glass ---------------------------------------------------------- */
+  --glass-surface:        rgba(255, 255, 255, 0.055);
+  --glass-surface-2:      rgba(255, 255, 255, 0.09);
+  --glass-surface-strong: rgba(255, 255, 255, 0.13);
+  --glass-border:         rgba(255, 255, 255, 0.16);
+  --glass-border-strong:  rgba(255, 255, 255, 0.30);
+  --glass-highlight:      rgba(255, 255, 255, 0.62);
+  --glass-inner-shadow:   rgba(5, 7, 13, 0.55);
+  --glass-blur: 22px;
+  --glass-blur-strong: 36px;
+  --glass-saturate: 145%;
+
+  /* ---- text ----------------------------------------------------------- */
+  --text-hi:  rgba(238, 244, 255, 0.96);
+  --text-mid: rgba(208, 218, 238, 0.74);
+  --text-low: rgba(176, 190, 216, 0.50);
+  --text-faint: rgba(160, 178, 210, 0.30);
+  --text-mono: rgba(150, 212, 255, 0.82);
+
+  /* ---- shadow / elevation -------------------------------------------- */
+  --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 18px 50px -18px rgba(0, 0, 0, 0.65);
+  --shadow-3: 0 40px 90px -30px rgba(0, 0, 0, 0.8);
+  --shadow-accent: 0 24px 70px -28px hsl(var(--c-primary-h) var(--c-primary-s) 55% / 0.55);
+  --glow-soft: 0 0 0 1px rgba(255, 255, 255, 0.04),
+               0 0 36px -6px hsl(var(--c-primary-h) var(--c-primary-s) 60% / 0.25);
+
+  /* ---- radius --------------------------------------------------------- */
+  --r-xs: 10px;
+  --r-sm: 16px;
+  --r-md: 22px;
+  --r-lg: 30px;
+  --r-xl: 40px;
+  --r-pill: 999px;
+  /* expressive Material-You squircle (asymmetric organic) */
+  --r-blob: 42% 58% 60% 40% / 48% 42% 58% 52%;
+
+  /* ---- spacing scale -------------------------------------------------- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+  --sp-9: 96px; --sp-10: 128px;
+
+  /* ---- typography ----------------------------------------------------- */
+  --font-sans: "Inter", system-ui, -apple-system, "SF Pro Text",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
+    "Consolas", "Liberation Mono", monospace;
+
+  /* fluid type scale (clamp: min, vw, max) */
+  --fs-mono: clamp(0.66rem, 0.6rem + 0.2vw, 0.78rem);
+  --fs-xs:   clamp(0.75rem, 0.72rem + 0.2vw, 0.85rem);
+  --fs-sm:   clamp(0.86rem, 0.82rem + 0.3vw, 0.98rem);
+  --fs-base: clamp(1rem, 0.95rem + 0.4vw, 1.15rem);
+  --fs-md:   clamp(1.15rem, 1.05rem + 0.6vw, 1.4rem);
+  --fs-lg:   clamp(1.5rem, 1.25rem + 1.2vw, 2.1rem);
+  --fs-xl:   clamp(2rem, 1.5rem + 2.4vw, 3.2rem);
+  --fs-2xl:  clamp(2.6rem, 1.8rem + 4vw, 5rem);
+  --fs-hero: clamp(3.2rem, 2rem + 7vw, 8.5rem);
+
+  --lh-tight: 1.04;
+  --lh-snug: 1.25;
+  --lh-base: 1.62;
+  --tracking-mono: 0.14em;
+  --tracking-tight: -0.02em;
+
+  /* ---- layout --------------------------------------------------------- */
+  --container: 1240px;
+  --container-wide: 1440px;
+  --gutter: clamp(18px, 5vw, 64px);
+  --topbar-h: 44px;
+  --dock-h: 78px;
+
+  /* ---- motion --------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.18s;
+  --dur-base: 0.32s;
+  --dur-slow: 0.6s;
+
+  /* ---- live pointer state (written by interactions.js) --------------- */
+  --cursor-x: 50vw;
+  --cursor-y: 50vh;
+  --mx: 50%;            /* pointer x within a hovered card (0–100%) */
+  --my: 50%;            /* pointer y within a hovered card (0–100%) */
+  --rx: 0deg;           /* card tilt X */
+  --ry: 0deg;           /* card tilt Y */
+
+  /* ---- z-index ladder ------------------------------------------------- */
+  --z-shader: 0;
+  --z-base: 1;
+  --z-blobs: 2;
+  --z-content: 10;
+  --z-topbar: 80;
+  --z-dock: 90;
+  --z-cursor: 95;
+  --z-toast: 120;
+}
+
+/* ===========================================================================
+ *  LIGHT THEME  —  "day glass" (toggled from the dock)
+ *  Bright frosted glass on a soft luminous field. Same accents, retuned.
+ * ======================================================================== */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-0: #e9eef7;
+  --bg-1: #eef2fa;
+  --bg-2: #f6f8fd;
+  --bg-grid: rgba(40, 70, 120, 0.06);
+
+  --c-primary-l: 50%;
+  --c-secondary-l: 60%;
+  --c-tertiary-l: 46%;
+  --c-expressive-l: 60%;
+
+  --glass-surface:        rgba(255, 255, 255, 0.55);
+  --glass-surface-2:      rgba(255, 255, 255, 0.66);
+  --glass-surface-strong: rgba(255, 255, 255, 0.8);
+  --glass-border:         rgba(255, 255, 255, 0.85);
+  --glass-border-strong:  rgba(120, 150, 210, 0.4);
+  --glass-highlight:      rgba(255, 255, 255, 0.95);
+  --glass-inner-shadow:   rgba(70, 100, 160, 0.18);
+
+  --text-hi:  rgba(18, 26, 44, 0.96);
+  --text-mid: rgba(38, 52, 80, 0.74);
+  --text-low: rgba(60, 78, 112, 0.55);
+  --text-faint: rgba(70, 92, 130, 0.3);
+  --text-mono: rgba(20, 90, 150, 0.85);
+
+  --shadow-2: 0 18px 50px -20px rgba(40, 70, 130, 0.4);
+  --shadow-3: 0 40px 90px -34px rgba(40, 70, 130, 0.45);
+  --glow-soft: 0 0 0 1px rgba(255, 255, 255, 0.6),
+               0 0 30px -6px hsl(var(--c-primary-h) var(--c-primary-s) 55% / 0.3);
+}

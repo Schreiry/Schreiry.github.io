@@ -1,0 +1,111 @@
+/* =============================================================================
+ *  responsive.css  —  desktop → tablet → phone
+ *  Strategy: immersive OS layout on large screens; calmer, stacked, touch-first
+ *  layout on small screens. No content is hidden behind hover on mobile.
+ * ========================================================================== */
+
+/* ---- large desktop: widen the stage ---------------------------------- */
+@media (min-width: 1500px) {
+  .container { max-width: var(--container-wide); }
+}
+
+/* ---- laptop / small desktop ------------------------------------------ */
+@media (max-width: 1100px) {
+  .hero { grid-template-columns: 1fr; gap: var(--sp-6); }
+  .hero__right { order: -1; }              /* portrait above the title */
+  .about { grid-template-columns: 1fr; }
+  .contact { grid-template-columns: 1fr; }
+}
+
+/* ---- new grids collapse ---------------------------------------------- */
+@media (max-width: 1024px) {
+  .focus-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---- tablet ----------------------------------------------------------- */
+@media (max-width: 880px) {
+  :root { --glass-blur: 16px; --glass-blur-strong: 24px; }
+
+  .workstation { grid-template-columns: 1fr; }
+  .panel-duo { grid-template-columns: 1fr; }
+  .gh-stats { grid-template-columns: repeat(2, 1fr); }
+  .topbar__menu { display: none; }
+
+  .section-head { grid-template-columns: auto 1fr; }
+  .section-head__measure { display: none; }
+
+  /* tilt is disabled by JS on coarse pointers; reset any inline transform */
+  .tilt { transform: none !important; }
+}
+
+/* ---- phone ------------------------------------------------------------ */
+@media (max-width: 560px) {
+  :root {
+    --glass-blur: 12px;
+    --glass-blur-strong: 16px;
+    --gutter: 18px;
+  }
+
+  .matrix { grid-template-columns: 1fr; }
+  .focus-grid { grid-template-columns: 1fr; }
+  .gh-stats { grid-template-columns: repeat(2, 1fr); }
+  .gh-langs { grid-template-columns: 1fr; }
+  .ws-gallery__grid { grid-template-columns: 1fr 1fr; }
+  .lightbox__nav { position: fixed; bottom: 20px; z-index: 5; }
+  .lightbox__nav--prev { left: 30%; }
+  .lightbox__nav--next { right: 30%; }
+  .topbar__status .mono.hide-sm { display: none; }
+  .measure-abs { display: none; }
+  .ws-meta { gap: var(--sp-3) var(--sp-4); }
+
+  /* keep only one ambient blob on phones (paint + power budget) */
+  .blob--2, .blob--3 { display: none; }
+  .blob--1 { opacity: 0.4; }
+
+  /* DOCK → sticky bottom action bar */
+  .dock-wrap {
+    left: 0; right: 0; bottom: 0;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    animation: none;
+  }
+  .dock {
+    width: 100%;
+    justify-content: space-around;
+    gap: 4px;
+    padding: 10px max(10px, env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));
+    border-radius: var(--r-lg) var(--r-lg) 0 0;
+    border-bottom: 0;
+  }
+  .dock-item { width: 46px; height: 46px; }
+  .dock-item:hover { transform: none; }     /* no hover lift on touch */
+  .dock-item:active { transform: scale(0.92); }
+  .dock-item__tip { display: none; }
+  .dock-sep { display: none; }
+
+  /* lift toast above the now full-width bar */
+  .toast { bottom: calc(var(--dock-h) + 18px); }
+
+  .btn { padding: 12px 18px; }
+  .hero__actions .btn { flex: 1 1 auto; justify-content: center; }
+}
+
+/* ---- short landscape phones: trim vertical padding ------------------- */
+@media (max-height: 520px) and (orientation: landscape) {
+  .section { padding-block: 48px; }
+}
+
+/* ---- hover-capable pointers only: enable the richer hover affordances */
+@media (hover: none) {
+  .glass:hover { transform: none; }
+  .tag:hover, .facet:hover { transform: none; }
+}
+
+/* ---- very fine print / print stylesheet ------------------------------ */
+@media print {
+  #bg-shader, .blob-field, .dock-wrap, .topbar, .toast { display: none !important; }
+  body { background: #fff; color: #000; }
+  .glass { background: #fff !important; border: 1px solid #ccc; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .text-grad, .glass-text { -webkit-text-fill-color: initial; color: #000 !important; }
+}

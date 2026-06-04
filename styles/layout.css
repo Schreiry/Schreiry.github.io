@@ -1,0 +1,198 @@
+/* =============================================================================
+ *  layout.css  —  structure, grids, section rhythm, OS chrome positioning
+ * ========================================================================== */
+
+/* ---- background shader canvas --------------------------------------- */
+#bg-shader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-shader);
+  pointer-events: none;
+  display: block;
+}
+
+/* ---- decorative Material-You blobs (organic light objects) ---------- */
+.blob-field {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-blobs);
+  pointer-events: none;
+  overflow: hidden;
+}
+.blob {
+  position: absolute;
+  width: clamp(280px, 34vw, 560px);
+  aspect-ratio: 1;
+  border-radius: var(--r-blob);
+  filter: blur(46px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+.blob--1 { top: -8%; left: -6%; background: radial-gradient(circle at 40% 40%, var(--accent-primary), transparent 70%); }
+.blob--2 { top: 32%; right: -10%; background: radial-gradient(circle at 50% 50%, var(--accent-secondary), transparent 70%); }
+.blob--3 { bottom: -12%; left: 26%; background: radial-gradient(circle at 50% 50%, var(--accent-tertiary), transparent 72%); opacity: 0.42; }
+
+/* ---- top status / menu bar (OS continuity) -------------------------- */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--topbar-h);
+  z-index: var(--z-topbar);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 0 clamp(14px, 3vw, 28px);
+  border-radius: 0;
+  border-left: 0; border-right: 0; border-top: 0;
+}
+.topbar__brand { display: flex; align-items: center; gap: var(--sp-3); font-weight: 650; color: var(--text-hi); }
+.topbar__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent-tertiary);
+  box-shadow: 0 0 12px 1px var(--accent-tertiary);
+}
+.topbar__menu { display: flex; gap: var(--sp-5); margin-left: var(--sp-3); }
+.topbar__menu a { color: var(--text-mid); font-size: var(--fs-sm); }
+.topbar__status { margin-left: auto; display: flex; align-items: center; gap: var(--sp-4); }
+
+/* ---- main shell ----------------------------------------------------- */
+main { position: relative; z-index: var(--z-content); }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--wide { max-width: var(--container-wide); }
+
+.section {
+  position: relative;
+  padding-block: clamp(56px, 9vw, 130px);
+  scroll-margin-top: calc(var(--topbar-h) + 20px);
+}
+.section:first-of-type { padding-top: calc(var(--topbar-h) + clamp(40px, 7vw, 90px)); }
+
+/* ---- section header (index + title + measurement) ------------------- */
+.section-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: var(--sp-4);
+  margin-bottom: clamp(28px, 4vw, 56px);
+}
+.section-head__index { font-family: var(--font-mono); font-size: var(--fs-md); color: var(--text-faint); letter-spacing: 0.1em; }
+.section-head__title { font-size: var(--fs-xl); }
+.section-head__measure { justify-self: end; text-align: right; }
+
+/* =====================================================================
+ *  HERO
+ * =================================================================== */
+.hero {
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+}
+.hero__left { display: flex; flex-direction: column; gap: var(--sp-5); }
+.hero__eyebrow { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.hero__title { font-size: var(--fs-hero); font-weight: 720; line-height: 0.92; }
+.hero__subtitle { font-size: var(--fs-md); color: var(--text-mid); font-weight: 520; }
+.hero__descriptor { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-mono); }
+.hero__text { font-size: var(--fs-md); max-width: 56ch; color: var(--text-mid); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-2); }
+.hero__right { display: flex; justify-content: center; }
+
+/* =====================================================================
+ *  ABOUT / system profile
+ * =================================================================== */
+.about {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: stretch;
+}
+.about__lead { padding: clamp(24px, 3vw, 40px); }
+.about__lead p { font-size: var(--fs-md); color: var(--text-mid); }
+.about__panel { padding: clamp(20px, 2.4vw, 32px); display: flex; flex-direction: column; gap: var(--sp-4); }
+
+/* =====================================================================
+ *  SKILLS / capability matrix
+ * =================================================================== */
+.matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+}
+
+/* =====================================================================
+ *  PROJECTS / workstations (big, stacked)
+ * =================================================================== */
+.projects { display: flex; flex-direction: column; gap: clamp(20px, 3vw, 40px); }
+
+/* =====================================================================
+ *  Trio panels (design / hardware / ai)
+ * =================================================================== */
+.panel-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 2vw, 28px);
+}
+.panel-solo { display: grid; }
+
+/* =====================================================================
+ *  CONTACT
+ * =================================================================== */
+.contact {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(18px, 2.4vw, 36px);
+  align-items: stretch;
+}
+
+/* ---- footer --------------------------------------------------------- */
+.footer {
+  position: relative;
+  z-index: var(--z-content);
+  padding: clamp(32px, 5vw, 60px) 0 calc(var(--dock-h) + 40px);
+  text-align: center;
+  color: var(--text-low);
+}
+
+/* =====================================================================
+ *  DOCK  —  floating command center (desktop)
+ * =================================================================== */
+.dock-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(14px, 2.2vw, 26px);
+  transform: translateX(-50%);
+  z-index: var(--z-dock);
+  display: flex;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100vw - 28px);
+}
+.dock {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 0.8vw, 12px);
+  padding: 10px 14px;
+}
+
+/* ---- toast (copy-email feedback) ------------------------------------ */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--dock-h) + 34px);
+  transform: translate(-50%, 16px);
+  z-index: var(--z-toast);
+  padding: 12px 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }

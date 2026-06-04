@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" width="400" height="480" role="img" aria-label="Portrait placeholder">
+  <defs>
+    <linearGradient id="pg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6ec6ff"/>
+      <stop offset="0.5" stop-color="#b49bff"/>
+      <stop offset="1" stop-color="#7df0c8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.32" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="0.45" stop-color="#9ec9ff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#05070d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c1426"/>
+      <stop offset="1" stop-color="#070a14"/>
+    </linearGradient>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0H0V20" fill="none" stroke="#9fc0ff" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="480" fill="url(#base)"/>
+  <rect width="400" height="480" fill="url(#grid)"/>
+  <ellipse cx="200" cy="150" rx="260" ry="220" fill="url(#glow)"/>
+
+  <!-- abstract head + shoulders silhouette -->
+  <g fill="url(#pg)" fill-opacity="0.9">
+    <circle cx="200" cy="186" r="74"/>
+    <path d="M70 480c0-92 58-150 130-150s130 58 130 150z"/>
+  </g>
+  <g fill="#05070d" fill-opacity="0.25">
+    <circle cx="200" cy="186" r="74"/>
+  </g>
+
+  <!-- measurement detail -->
+  <g font-family="ui-monospace, 'JetBrains Mono', monospace" fill="#cfe0ff" fill-opacity="0.55" font-size="12" letter-spacing="1">
+    <text x="20" y="34">portrait.svg</text>
+    <text x="20" y="460">400 × 480 · replace in /images</text>
+  </g>
+  <g stroke="#6ec6ff" stroke-opacity="0.6" stroke-width="1.5" fill="none">
+    <path d="M20 44h26M20 44v-0"/>
+    <path d="M380 44h-26"/>
+  </g>
+</svg>
