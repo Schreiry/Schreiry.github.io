@@ -30,7 +30,7 @@
   <!-- Fonts: preconnect + display=swap, modest weights (graceful system fallback) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@500..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Styles (order matters: tokens → base → layout → glass → components → motion → responsive) -->
   <link rel="stylesheet" href="./styles/variables.css" />
@@ -46,6 +46,8 @@
        directly as a file (file://) AND on GitHub Pages. defer = run in order. -->
   <script defer src="./src/config.js"></script>
   <script defer src="./src/icons.js"></script>
+  <script defer src="./src/lenis.min.js"></script>
+  <script defer src="./src/motion.js"></script>
   <script defer src="./src/github.js"></script>
   <script defer src="./src/shader.js"></script>
   <script defer src="./src/projects.js"></script>
@@ -72,29 +74,47 @@
     <span class="blob blob--3"></span>
   </div>
 
-  <!-- ===== operational top bar (OS menu / status header) ============ -->
-  <header class="topbar glass glass--strong" role="banner">
-    <a class="topbar__brand" href="#hero" aria-label="portfolio.os — home">
-      <span class="topbar__mark" aria-hidden="true" data-ico="node"></span>
-      <span class="topbar__name">portfolio<span class="topbar__name-dim">.os</span></span>
-    </a>
+  <!-- engineering layer: subtle wireframe objects (graphic retro-futurism) -->
+  <div class="wire-field" aria-hidden="true">
+    <svg class="wire wire--cube" viewBox="0 0 200 200" fill="none" stroke="var(--wire-line)" stroke-width="1">
+      <path d="M60 50 140 50 140 130 60 130Z"/><path d="M85 30 165 30 165 110 85 110Z"/>
+      <path d="M60 50 85 30M140 50 165 30M140 130 165 110M60 130 85 110"/>
+    </svg>
+    <svg class="wire wire--grid" viewBox="0 0 300 180" fill="none" stroke="var(--wire-line)" stroke-width="1" preserveAspectRatio="none">
+      <path d="M0 30 300 30M0 60 300 60M0 95 300 95M0 135 300 135M0 180 300 180"/>
+      <path d="M30 0 10 180M90 0 80 180M150 0 150 180M210 0 220 180M270 0 290 180"/>
+    </svg>
+  </div>
 
-    <nav class="topbar__menu" aria-label="Primary">
-      <a href="#about"><i aria-hidden="true">01</i>Profile</a>
-      <a href="#skills"><i aria-hidden="true">02</i>Skills</a>
-      <a href="#projects"><i aria-hidden="true">03</i>Projects</a>
-      <a href="#design"><i aria-hidden="true">04</i>Design</a>
-      <a href="#hardware"><i aria-hidden="true">05</i>Systems</a>
-      <a href="#ai"><i aria-hidden="true">06</i>AI</a>
-      <a href="#contact"><i aria-hidden="true">07</i>Contact</a>
-    </nav>
+  <!-- Swiss column guides -->
+  <div class="grid-guides" aria-hidden="true"></div>
 
-    <div class="topbar__status">
-      <span class="topbar__sig mono hide-sm">
-        <span class="led" aria-hidden="true"></span><span data-bind="microcopy.signal">signal: available</span>
-      </span>
-      <span class="topbar__clock mono" id="clock" aria-label="Local time">—:—</span>
+  <!-- ===== operational top bar (seamless, scroll-chasing OS header) === -->
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <a class="topbar__brand" href="#hero" aria-label="portfolio.os — home">
+        <span class="topbar__mark" aria-hidden="true" data-ico="node"></span>
+        <span class="topbar__name">portfolio<span class="topbar__name-dim">.os</span></span>
+      </a>
+
+      <nav class="topbar__menu" aria-label="Primary">
+        <a href="#about"><i aria-hidden="true">01</i>Profile</a>
+        <a href="#skills"><i aria-hidden="true">02</i>Skills</a>
+        <a href="#projects"><i aria-hidden="true">03</i>Projects</a>
+        <a href="#design"><i aria-hidden="true">04</i>Design</a>
+        <a href="#hardware"><i aria-hidden="true">05</i>Systems</a>
+        <a href="#ai"><i aria-hidden="true">06</i>AI</a>
+        <a href="#contact"><i aria-hidden="true">07</i>Contact</a>
+      </nav>
+
+      <div class="topbar__status">
+        <span class="topbar__sig mono hide-sm">
+          <span class="led" aria-hidden="true"></span><span data-bind="microcopy.signal">signal: available</span>
+        </span>
+        <span class="topbar__clock mono" id="clock" aria-label="Local time">—:—</span>
+      </div>
     </div>
+    <span class="topbar__progress" aria-hidden="true"></span>
   </header>
 
   <main>
@@ -400,6 +420,9 @@
       </p>
     </footer>
   </main>
+
+  <!-- ===== sector rail (spatial scroll guide / coordinates) ==== -->
+  <nav id="rail" class="rail" aria-label="Sectors"></nav>
 
   <!-- ===== floating dock / command center ====================== -->
   <div class="dock-wrap">

@@ -143,6 +143,46 @@
     }).join("");
   }
 
+  /* ---- sector rail (spatial scroll guide) ----------------------------- */
+  const SECTORS = [
+    { id: "hero", n: "00", label: "Identity" },
+    { id: "about", n: "01", label: "Profile" },
+    { id: "skills", n: "02", label: "Matrix" },
+    { id: "projects", n: "03", label: "Builds" },
+    { id: "design", n: "04", label: "Design" },
+    { id: "hardware", n: "05", label: "Systems" },
+    { id: "ai", n: "06", label: "AI" },
+    { id: "contact", n: "07", label: "Signal" },
+  ];
+  function renderRail() {
+    const host = $("#rail");
+    if (!host) return;
+    host.innerHTML = SECTORS.map((s) => `
+      <a class="rail__item" href="#${s.id}" aria-label="Go to ${esc(s.label)} sector">
+        <span class="rail__label">${esc(s.label)}</span>
+        <span class="rail__tick" aria-hidden="true"></span>
+        <span class="rail__num" aria-hidden="true">${s.n}</span>
+      </a>`).join("");
+  }
+
+  /* ---- corner-bracket frames on each section's primary panel ---------- */
+  function decorateFrames() {
+    const sel = [
+      ".about__lead",
+      "#design .panel-duo > .panel:first-child",
+      "#hardware .panel",
+      "#ai .panel",
+      "#contact .contact > .panel:first-child",
+    ].join(",");
+    $$(sel).forEach((el) => {
+      if (el.querySelector(":scope > .fui-frame__brk")) return;
+      el.classList.add("fui-frame");
+      el.insertAdjacentHTML("beforeend",
+        '<span class="fui-frame__brk fui-frame__brk--tl" aria-hidden="true"></span>' +
+        '<span class="fui-frame__brk fui-frame__brk--br" aria-hidden="true"></span>');
+    });
+  }
+
   /* ---- inline SVG icons (static shell: buttons, topbar mark) ---------- */
   function renderIcons() {
     if (!CV.icon) return;
@@ -168,11 +208,14 @@
     renderKV("#ai-list", config.ai.principles);
     renderSocial();
     renderDock();
+    renderRail();
+    decorateFrames();
     if (CV.renderProjects) CV.renderProjects($("#project-grid"), config.projects);
 
     // every large glass card gets the smooth hover shape-morph
     $$(".about__lead, .about__panel, .panel, .gh-stat, .focus, .social-card").forEach((el) => el.classList.add("morph"));
 
+    if (CV.initMotion) CV.initMotion();
     if (CV.initShader) CV.initShader($("#bg-shader"));
     if (CV.initCursor) CV.initCursor();
     if (CV.initInteractions) CV.initInteractions(config);

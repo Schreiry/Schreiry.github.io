@@ -8,6 +8,46 @@ window.CV = window.CV || {};
 (function () {
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  function rafThrottle(fn) {
+    let ticking = false, lastArgs = null;
+    return (...args) => {
+      lastArgs = args;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; fn(...lastArgs); });
+    };
+  }
+
+  /* seamless topbar that compacts, chases the scroll, and shows progress */
+  function initTopbar() {
+    const tb = document.querySelector(".topbar");
+    if (!tb) return;
+    const prog = tb.querySelector(".topbar__progress");
+    let lastY = window.scrollY || 0;
+    let hidden = false;
+    const HIDE_AFTER = 160;   // px before the bar is allowed to retract
+    const DELTA = 5;          // px of intent before reacting (kills jitter)
+
+    const onScroll = rafThrottle(() => {
+      const y = window.scrollY || 0;
+      const max = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+
+      tb.classList.toggle("is-scrolled", y > 6);
+      if (prog) prog.style.transform = "scaleX(" + Math.max(0, Math.min(1, y / max)) + ")";
+
+      if (!reduceMotion) {
+        const dy = y - lastY;
+        if (y > HIDE_AFTER && dy > DELTA && !hidden) { tb.classList.add("is-hidden"); hidden = true; }
+        else if ((dy < -DELTA || y < HIDE_AFTER) && hidden) { tb.classList.remove("is-hidden"); hidden = false; }
+      }
+      lastY = y;
+    });
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    onScroll();
+  }
+
   function initReveal() {
     const items = document.querySelectorAll(".reveal");
     if (!items.length) return;
@@ -40,20 +80,23 @@ window.CV = window.CV || {};
   }
 
   function initScrollSpy() {
-    const links = [...document.querySelectorAll(".topbar__menu a[href^='#']")];
+    const links = [...document.querySelectorAll(".topbar__menu a[href^='#'], .rail__item[href^='#']")];
     if (!links.length || !("IntersectionObserver" in window)) return;
-    const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+    // a section id may have several links pointing at it (topbar + rail)
+    const byId = new Map();
+    links.forEach((a) => {
+      const id = a.getAttribute("href").slice(1);
+      if (!byId.has(id)) byId.set(id, []);
+      byId.get(id).push(a);
+    });
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        const link = map.get(entry.target.id);
-        if (!link) return;
-        if (entry.isIntersecting) {
-          links.forEach((l) => l.removeAttribute("aria-current"));
-          link.setAttribute("aria-current", "true");
-        }
+        if (!entry.isIntersecting) return;
+        links.forEach((l) => l.removeAttribute("aria-current"));
+        (byId.get(entry.target.id) || []).forEach((l) => l.setAttribute("aria-current", "true"));
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    map.forEach((_, id) => { const sec = document.getElementById(id); if (sec) io.observe(sec); });
+    byId.forEach((_, id) => { const sec = document.getElementById(id); if (sec) io.observe(sec); });
   }
 
   function initClock() {
@@ -67,6 +110,7 @@ window.CV = window.CV || {};
   }
 
   window.CV.initAnimations = function () {
+    initTopbar();
     initReveal();
     initLangBars();
     initScrollSpy();

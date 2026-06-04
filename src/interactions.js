@@ -273,7 +273,8 @@ window.CV = window.CV || {};
         case "toggle-theme": e.preventDefault(); toggleTheme(); break;
         case "scroll-top":
           e.preventDefault();
-          window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+          if (window.CV && window.CV.scrollTo) window.CV.scrollTo(0);
+          else window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
           break;
         case "cycle-language": {
           e.preventDefault();

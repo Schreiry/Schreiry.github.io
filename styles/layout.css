@@ -26,31 +26,38 @@
   width: clamp(280px, 34vw, 560px);
   aspect-ratio: 1;
   border-radius: var(--r-blob);
-  filter: blur(46px);
-  opacity: 0.5;
+  filter: blur(52px);
+  opacity: 0.38;
   mix-blend-mode: screen;
   will-change: transform;
 }
 .blob--1 { top: -8%; left: -6%; background: radial-gradient(circle at 40% 40%, var(--accent-primary), transparent 70%); }
 .blob--2 { top: 32%; right: -10%; background: radial-gradient(circle at 50% 50%, var(--accent-secondary), transparent 70%); }
-.blob--3 { bottom: -12%; left: 26%; background: radial-gradient(circle at 50% 50%, var(--accent-tertiary), transparent 72%); opacity: 0.42; }
+.blob--3 { bottom: -12%; left: 26%; background: radial-gradient(circle at 50% 50%, var(--accent-tertiary), transparent 72%); opacity: 0.3; }
 
-/* ---- top status / menu bar (OS continuity) -------------------------- */
+/* ---- top status / menu bar — full-bleed, seamless, scroll-chasing ---- */
 .topbar {
   position: fixed;
-  top: var(--topbar-gap);
-  left: clamp(12px, 2vw, 26px);
-  right: clamp(12px, 2vw, 26px);
+  top: 0; left: 0; right: 0;
   height: var(--topbar-h);
   z-index: var(--z-topbar);
+  pointer-events: none;           /* inner re-enables; faded glass never blocks */
+  transition: height var(--dur-base) var(--ease-out),
+              transform var(--dur-slow) var(--ease-spring);
+}
+.topbar__inner {
+  pointer-events: auto;
+  height: var(--topbar-h);
+  max-width: var(--container-wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
   display: flex;
   align-items: center;
   gap: var(--sp-4);
-  padding: 0 clamp(16px, 2.4vw, 26px);
-  border-radius: var(--r-pill);
+  transition: height var(--dur-base) var(--ease-out);
 }
 .topbar__brand { display: flex; align-items: center; gap: var(--sp-3); font-weight: 650; color: var(--text-hi); }
-.topbar__menu { display: flex; gap: var(--sp-5); margin-left: var(--sp-3); }
+.topbar__menu { display: flex; gap: var(--sp-5); margin-left: var(--sp-5); }
 .topbar__menu a { color: var(--text-mid); font-size: var(--fs-sm); }
 .topbar__status { margin-left: auto; display: flex; align-items: center; gap: var(--sp-4); }
 

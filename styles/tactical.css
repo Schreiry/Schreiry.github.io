@@ -200,8 +200,53 @@
 .id-frame__brk--br { bottom: -3px; right: -3px; border-bottom: 2px solid var(--accent-primary); border-right: 2px solid var(--accent-primary); }
 
 /* ---------------------------------------------------------------------------
- *  TOPBAR — operational menu / status header
+ *  TOPBAR — seamless glass that fades into the page and chases the scroll
  * ------------------------------------------------------------------------ */
+/* glass layer extends below the bar and is masked so it DRIPS into the page
+ * (no hard edge) — the "seamless / borderless" merge David asked for */
+.topbar::before {
+  content: ""; position: absolute; inset: 0 0 -24px 0; z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--bg-1) 70%, transparent) 0%,
+    color-mix(in oklab, var(--bg-1) 30%, transparent) 55%,
+    transparent 100%);
+  -webkit-backdrop-filter: blur(13px) saturate(140%);
+          backdrop-filter: blur(13px) saturate(140%);
+  -webkit-mask-image: linear-gradient(180deg, #000 56%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 56%, transparent 100%);
+  transition: background var(--dur-base) var(--ease-out),
+              backdrop-filter var(--dur-base) var(--ease-out);
+}
+/* hairline that only appears once you start scrolling */
+.topbar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border) 12%, var(--glass-border) 88%, transparent);
+  opacity: 0; transition: opacity var(--dur-base) var(--ease-out);
+}
+.topbar.is-scrolled { height: var(--topbar-h-min); }
+.topbar.is-scrolled .topbar__inner { height: var(--topbar-h-min); }
+.topbar.is-scrolled::before {
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--bg-1) 88%, transparent) 0%,
+    color-mix(in oklab, var(--bg-1) 52%, transparent) 60%,
+    transparent 100%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+          backdrop-filter: blur(20px) saturate(150%);
+}
+.topbar.is-scrolled::after { opacity: 1; }
+/* chase: slides away on scroll-down, springs back on scroll-up */
+.topbar.is-hidden { transform: translateY(-100%); }
+.topbar:focus-within { transform: none; }            /* keyboard users keep it */
+/* scroll-progress hairline riding the bottom edge */
+.topbar__progress {
+  position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+  transform: scaleX(0); transform-origin: left center;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  box-shadow: 0 0 10px 0 color-mix(in oklab, var(--accent-primary) 70%, transparent);
+  z-index: 1;
+}
+
 .topbar__brand { text-decoration: none; }
 .topbar__mark {
   display: grid; place-items: center;
@@ -212,8 +257,11 @@
   border: 1px solid color-mix(in oklab, var(--accent-primary) 40%, transparent);
 }
 .topbar__mark .svg-ico { width: 15px; height: 15px; }
-.topbar__name { font-weight: 680; letter-spacing: 0.01em; color: var(--text-hi); }
+.topbar__name { font-family: var(--font-display); font-weight: 620; letter-spacing: 0.02em; color: var(--text-hi); }
 .topbar__name-dim { color: var(--text-low); font-weight: 500; }
+
+/* engineering readouts use the display grotesque too */
+.gh-stat__num { font-family: var(--font-display); letter-spacing: -0.01em; }
 
 .topbar__menu { gap: clamp(10px, 1.4vw, 22px); }
 .topbar__menu a {
@@ -295,6 +343,62 @@
 .workstation::before { top: 12px; left: 12px; border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
 .workstation::after  { bottom: 12px; right: 12px; border-bottom: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
 .workstation:hover::before, .workstation:hover::after { opacity: 1; }
+
+/* ===========================================================================
+ *  FUI / engineering layer — Swiss guides, wireframes, sector rail, frames
+ *  Kept deliberately quiet: structure you feel before you notice it.
+ * ======================================================================== */
+
+/* Swiss column guides — thin vertical rules at the content column edges */
+.grid-guides { position: fixed; inset: 0; z-index: var(--z-base); pointer-events: none; }
+.grid-guides::before, .grid-guides::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(180deg, transparent, var(--hud-line) 9%, var(--hud-line) 91%, transparent);
+}
+.grid-guides::before { left: max(var(--gutter), calc(50% - var(--container) / 2)); }
+.grid-guides::after  { right: max(var(--gutter), calc(50% - var(--container) / 2)); }
+
+/* background wireframe objects — present, never loud */
+.wire-field { position: fixed; inset: 0; z-index: var(--z-blobs); pointer-events: none; overflow: hidden; }
+.wire { position: absolute; fill: none; stroke: var(--wire-line); stroke-width: 1; }
+.wire--cube { width: clamp(130px, 15vw, 230px); top: 15%; right: 5%; transform-origin: 50% 50%; animation: wire-spin 52s linear infinite; }
+.wire--grid { width: clamp(210px, 27vw, 400px); bottom: 9%; left: 3%; animation: wire-float 24s var(--ease-inout) infinite; }
+@keyframes wire-spin { to { transform: rotate(360deg); } }
+@keyframes wire-float { 0%, 100% { transform: translateY(0) skewX(-9deg); } 50% { transform: translateY(-16px) skewX(-9deg); } }
+
+/* sector rail — a spatial index that follows the scroll and guides the eye */
+.rail {
+  position: fixed; right: clamp(6px, 1.2vw, 16px); top: 50%; transform: translateY(-50%);
+  z-index: var(--z-topbar);
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 6px 4px;
+}
+.rail__item {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  padding: 5px 4px; text-decoration: none; color: var(--text-faint);
+  font-family: var(--font-mono); font-size: var(--fs-mono); letter-spacing: var(--tracking-mono);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.rail__label {
+  text-transform: uppercase; color: var(--text-low); white-space: nowrap;
+  opacity: 0; transform: translateX(6px);
+  transition: opacity var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.rail__tick { width: 16px; height: 1px; background: currentColor; flex: none; transition: width var(--dur-base) var(--ease-out); }
+.rail__num { width: 1.8em; text-align: right; }
+.rail__item:hover { color: var(--text-mid); }
+.rail__item:hover .rail__label { opacity: 1; transform: none; }
+.rail__item[aria-current="true"] { color: var(--accent-primary); }
+.rail__item[aria-current="true"] .rail__tick { width: 30px; box-shadow: 0 0 8px 0 var(--accent-primary); }
+.rail__item[aria-current="true"] .rail__label { opacity: 1; transform: none; color: var(--text-hi); }
+
+/* corner-bracket frame for key glass panels — uses child spans because
+ * .glass already owns ::before/::after for its sheen/refraction */
+.fui-frame__brk { position: absolute; z-index: 6; width: 14px; height: 14px; pointer-events: none;
+  opacity: 0.5; transition: opacity var(--dur-base) var(--ease-out); }
+.fui-frame__brk--tl { top: 12px; left: 12px; border-top: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
+.fui-frame__brk--br { bottom: 12px; right: 12px; border-bottom: 1.5px solid var(--accent); border-right: 1.5px solid var(--accent); }
+.glass:hover > .fui-frame__brk { opacity: 0.95; }
 
 /* ---------------------------------------------------------------------------
  *  Light-theme touch-ups for the operational layer

@@ -13,13 +13,16 @@
   --bg-1: #080b14;            /* deep graphite */
   --bg-2: #0c111e;            /* midnight-blue surface */
   --bg-grid: rgba(150, 180, 230, 0.045);
+  --hud-line: rgba(150, 180, 230, 0.09);   /* visible-but-quiet FUI guides */
+  --wire-line: rgba(160, 190, 235, 0.10);  /* background wireframe strokes */
 
-  /* ---- Material You expressive accents -------------------------------- */
-  /* hues kept as components so tints/shades can be generated on the fly */
-  --c-primary-h: 205; --c-primary-s: 100%; --c-primary-l: 72%;
-  --c-secondary-h: 256; --c-secondary-s: 100%; --c-secondary-l: 80%;
-  --c-tertiary-h: 158; --c-tertiary-s: 78%; --c-tertiary-l: 72%;
-  --c-expressive-h: 352; --c-expressive-s: 100%; --c-expressive-l: 75%;
+  /* ---- accents — softened "non-toxic" tuning (hues kept for continuity)
+     saturation pulled ~20-25% down + a touch darker so glass reads calm and
+     engineered rather than neon. Components feed tints/shades + the shader. */
+  --c-primary-h: 205; --c-primary-s: 72%; --c-primary-l: 68%;
+  --c-secondary-h: 256; --c-secondary-s: 64%; --c-secondary-l: 76%;
+  --c-tertiary-h: 162; --c-tertiary-s: 48%; --c-tertiary-l: 64%;
+  --c-expressive-h: 352; --c-expressive-s: 70%; --c-expressive-l: 70%;
 
   --accent-primary:    hsl(var(--c-primary-h)   var(--c-primary-s)   var(--c-primary-l));   /* sky / pixel blue */
   --accent-secondary:  hsl(var(--c-secondary-h) var(--c-secondary-s) var(--c-secondary-l)); /* orchid violet  */
@@ -71,12 +74,12 @@
   --glow-soft: 0 0 0 1px rgba(255, 255, 255, 0.04),
                0 0 36px -6px hsl(var(--c-primary-h) var(--c-primary-s) 60% / 0.25);
 
-  /* ---- radius --------------------------------------------------------- */
-  --r-xs: 10px;
-  --r-sm: 16px;
-  --r-md: 22px;
-  --r-lg: 30px;
-  --r-xl: 40px;
+  /* ---- radius — tightened for a more brutalist / serious edge --------- */
+  --r-xs: 7px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 26px;
   --r-pill: 999px;
   /* expressive Material-You squircle (asymmetric organic) */
   --r-blob: 42% 58% 60% 40% / 48% 42% 58% 52%;
@@ -87,6 +90,9 @@
   --sp-9: 96px; --sp-10: 128px;
 
   /* ---- typography ----------------------------------------------------- */
+  /* display = strict Swiss/industrial grotesque (titles, readouts);
+     sans = humanist body for legibility; mono = data / HUD labels */
+  --font-display: "Archivo Expanded", "Archivo", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, -apple-system, "SF Pro Text",
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
@@ -98,10 +104,11 @@
   --fs-sm:   clamp(0.86rem, 0.82rem + 0.3vw, 0.98rem);
   --fs-base: clamp(1rem, 0.95rem + 0.4vw, 1.15rem);
   --fs-md:   clamp(1.15rem, 1.05rem + 0.6vw, 1.4rem);
-  --fs-lg:   clamp(1.5rem, 1.25rem + 1.2vw, 2.1rem);
-  --fs-xl:   clamp(2rem, 1.5rem + 2.4vw, 3.2rem);
-  --fs-2xl:  clamp(2.6rem, 1.8rem + 4vw, 5rem);
-  --fs-hero: clamp(3.2rem, 2rem + 7vw, 8.5rem);
+  /* display sizes retuned for Archivo Expanded (wider than Inter) */
+  --fs-lg:   clamp(1.4rem, 1.2rem + 1vw, 1.95rem);
+  --fs-xl:   clamp(1.85rem, 1.4rem + 2vw, 2.9rem);
+  --fs-2xl:  clamp(2.4rem, 1.7rem + 3.4vw, 4.4rem);
+  --fs-hero: clamp(2.7rem, 1.9rem + 5.2vw, 6.6rem);
 
   --lh-tight: 1.04;
   --lh-snug: 1.25;
@@ -113,8 +120,9 @@
   --container: 1240px;
   --container-wide: 1440px;
   --gutter: clamp(18px, 5vw, 64px);
-  --topbar-h: 46px;
-  --topbar-gap: clamp(12px, 1.6vw, 20px);
+  --topbar-h: 56px;          /* full-bleed header, resting height */
+  --topbar-h-min: 46px;      /* compacted height once scrolled */
+  --topbar-gap: 10px;        /* extra scroll clearance under the bar */
   --dock-h: 92px;
 
   /* ---- motion --------------------------------------------------------- */
