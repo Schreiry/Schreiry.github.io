@@ -20,7 +20,7 @@ window.CV.config = {
     name: "David Greve",
     handle: "Schreiry",
     githubUser: "Schreiry",                 // used for the live GitHub API panel
-    role: "Junior Software Engineer",
+    role: "Software Engineer",
     descriptor:
       "Python / Rust / C++ · HPC · Simulation Systems · Backend Logic · Visual Systems",
     location: "Tbilisi, Georgia",
@@ -59,7 +59,7 @@ window.CV.config = {
     linkedin: "https://www.linkedin.com/in/schreiry/",
     instagram: "https://instagram.com/schreitory",
     facebook: "https://facebook.com/Schreitory",
-    email: "gamerdg634@gmail.com",
+    email: "schreiry@gmail.com",
   },
 
   // Contact grid + dock links. glyph = short mono label or symbol.
@@ -106,7 +106,7 @@ window.CV.config = {
   /* --- about → system profile rows -------------------------------------- */
   profileRows: [
     { key: "identity", value: "David Greve · Schreiry" },
-    { key: "role", value: "Junior Software Engineer" },
+    { key: "role", value: "Software Engineer" },
     { key: "education", value: "Computer Engineering — GTU" },
     { key: "location", value: "Tbilisi, Georgia" },
     { key: "focus", value: "HPC · Simulation · Backend · Interface" },
